@@ -1,3 +1,5 @@
+import { affirmations } from "../data/affirmations";
+
 export default function Home() {
   return (
     <main style={{ padding: 20, fontFamily: "sans-serif" }}>
@@ -6,15 +8,11 @@ export default function Home() {
 
       <h2>Categories</h2>
       <ul>
-        <li>Confidence</li>
-        <li>Tournament Mindset</li>
-        <li>Focus</li>
-        <li>Recovery</li>
-        <li>Pre-Round</li>
-        <li>Course Management</li>
-        <li>Technique</li>
-        <li>Growth</li>
-        <li>Resilience</li>
+        {Object.keys(affirmations).map((category) => (
+          <li key={category}>
+            {category.replace(/([A-Z])/g, " $1")}
+          </li>
+        ))}
         <li>Coach Notes</li>
       </ul>
 
