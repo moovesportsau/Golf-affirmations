@@ -1,5 +1,5 @@
 export const affirmations = {
-  confidence: [
+  Confidence: [
     "I trust my swing and embrace my swing with confidence.",
     "My pre-shot routine helps my shot outcome.",
     "Every shot is an opportunity to shine.",
@@ -12,7 +12,7 @@ export const affirmations = {
     "I trust my instincts on course."
   ],
 
-  tournamentMindset: [
+  TournamentMindset: [
     "I breathe deeply and stay relaxed.",
     "I let go of tension and play freely.",
     "I embrace challenges as opportunities.",
@@ -25,7 +25,7 @@ export const affirmations = {
     "I am patient with myself and my game."
   ],
 
-  focus: [
+  Focus: [
     "My mind is calm, my focus is sharp, and my game is strong.",
     "I visualise success and bring that vision to life.",
     "I stay present and focused with every shot.",
@@ -38,7 +38,7 @@ export const affirmations = {
     "Nothing matters except my target and my routine."
   ],
 
-  recovery: [
+  Recovery: [
     "Every round is an opportunity to grow and improve.",
     "One shot has no power over the next.",
     "I release frustration with every exhale.",
@@ -51,7 +51,7 @@ export const affirmations = {
     "I respond, not react."
   ],
 
-  preRound: [
+  PreRound: [
     "My pre-shot routine centers me and prepares me for excellence.",
     "I am ready to play my best golf today.",
     "My preparation gives me confidence.",
@@ -64,7 +64,7 @@ export const affirmations = {
     "I am excited to compete."
   ],
 
-  courseManagement: [
+  CourseManagement: [
     "I play to my strengths.",
     "I choose smart targets and commit fully.",
     "I respect the course and play within myself.",
@@ -77,7 +77,7 @@ export const affirmations = {
     "Smart golf leads to low scores."
   ],
 
-  technique: [
+  Technique: [
     "I trust my fundamentals.",
     "My grip, stance, and posture are solid.",
     "I trust my swing completely.",
@@ -90,8 +90,8 @@ export const affirmations = {
     "I strike the ball cleanly and confidently."
   ],
 
-  growth: [
-    "Every round teaches me something valuable.",
+  Growth: [
+    "Each round teaches me something valuable.",
     "I improve with every intentional swing.",
     "Progress matters more than perfection.",
     "I welcome challenges as opportunities to grow.",
@@ -103,7 +103,7 @@ export const affirmations = {
     "My ceiling rises every time I show up to learn."
   ],
 
-  resilience: [
+  Resilience: [
     "I stay strong under pressure.",
     "I trust myself in difficult moments.",
     "I thrive in competition and adversity.",
