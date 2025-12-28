@@ -11,12 +11,28 @@ export default function CategoryPage() {
 
   if (!items) {
     return (
-      <main style={{ padding: 20, fontFamily: "sans-serif" }}>
-        <h1>Coach Notes</h1>
-        <p>You’ll be able to add your own notes here.</p>
-        <button onClick={() => router.push("/")}>← Back</button>
-      </main>
-    );
+  <main style={{ padding: 20, fontFamily: "sans-serif" }}>
+    <h1>{slug.replace(/([A-Z])/g, " $1")}</h1>
+
+    {items.map((text, index) => (
+      <div
+        key={index}
+        style={{
+          padding: 16,
+          marginBottom: 16,
+          borderRadius: 12,
+          background: "#f5f5f5",
+          fontSize: 16,
+          lineHeight: 1.5
+        }}
+      >
+        {text}
+      </div>
+    ))}
+
+    <button onClick={() => router.push("/")}>← Back</button>
+  </main>
+);
   }
 
   return (
