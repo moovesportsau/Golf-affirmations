@@ -6,7 +6,7 @@ export default function Success() {
 
   useEffect(() => {
     localStorage.setItem("paid", "true");
-    setTimeout(() => router.push("/"), 1500);
+    setTimeout(() => router.push("/"), 1200);
   }, [router]);
 
   return (
