@@ -57,7 +57,7 @@ export default function Home() {
             cursor: "pointer",
           }}
         >
-          🔓 Unlock Full Access – $3.49
+          🔓 Unlock Full Access – $2.49
         </button>
       )}
 
