@@ -7,8 +7,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest"
-  }
+  "next": "latest",
+  "react": "latest",
+  "react-dom": "latest",
+  "stripe": "^14.0.0"
 }
