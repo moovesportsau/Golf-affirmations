@@ -4,15 +4,31 @@ import { affirmations } from "../data/affirmations";
 export default function Home() {
   const router = useRouter();
 
-  // These are the ONLY free sections for now:
+  // FREE categories only
   const FREE_KEYS = new Set(["Confidence", "Focus"]);
 
-  // Helper to display nicer titles from keys
-  const pretty = (key) =>
-    key
-      .replace(/([A-Z])/g, " $1")
-      .replace(/^./, (c) => c.toUpperCase())
-      .trim();
+  // Exact order you requested
+  const ORDERED_CATEGORIES = [
+    "Confidence",
+    "Focus",
+    "Technique",
+    "Growth",
+    "PreRound",
+    "TournamentMindset",
+    "CourseManagement",
+    "Resilience",
+    "Recovery",
+  ];
+
+  // Pretty titles for display
+  const pretty = (key) => {
+    const map = {
+      PreRound: "Pre-Round",
+      TournamentMindset: "Tournament Mindset",
+      CourseManagement: "Course Management",
+    };
+    return map[key] || key;
+  };
 
   const goToCategory = (slug, isLocked) => {
     if (isLocked) {
@@ -22,13 +38,10 @@ export default function Home() {
     router.push(`/category/${slug}`);
   };
 
-  // Categories that exist in your affirmations data file
-  const categoryKeys = Object.keys(affirmations);
-
   return (
     <main style={{ padding: 20, fontFamily: "sans-serif" }}>
-      <h1>Golf Affirmations - Find Your Perfect Swing Mindset</h1>
-      <p>Elevate your mental game with positive affirmations designed specifically for golfers.  Build confidence, improve focus, and unlock your true potential on the course.</p>
+      <h1>Golf Affirmations</h1>
+      <p>Mental strength training for competitive and junior golfers.</p>
 
       <button
         onClick={() => alert("Premium unlock is coming soon!")}
@@ -47,9 +60,12 @@ export default function Home() {
         🔓 Unlock Full Access (Coming Soon)
       </button>
 
-      {/* Free categories from data */}
-      {categoryKeys.map((key) => {
+      {ORDERED_CATEGORIES.map((key) => {
+        // Skip if the category doesn’t exist in data
+        if (!affirmations[key]) return null;
+
         const isLocked = !FREE_KEYS.has(key);
+
         return (
           <div
             key={key}
@@ -72,7 +88,7 @@ export default function Home() {
         );
       })}
 
-      {/* Coach Notes ALWAYS exists (even though it's user-entered) */}
+      {/* Coach Notes – always last */}
       <div
         onClick={() => goToCategory("coachNotes", false)}
         style={{
@@ -88,7 +104,7 @@ export default function Home() {
         }}
       >
         <span>Coach Notes</span>
-        <span>✅</span>
+        <span>📝</span>
       </div>
     </main>
   );
