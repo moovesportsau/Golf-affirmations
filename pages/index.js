@@ -4,16 +4,26 @@ import { affirmations } from "../data/affirmations";
 export default function Home() {
   const router = useRouter();
 
-  // Optional: keep these shown with a lock icon to signal future premium
-  const lockedCategories = [
-    "Tournament Mindset",
-    "Recovery",
-    "Pre-Round",
-    "Course Management",
-    "Technique",
-    "Growth",
-    "Resilience",
-  ];
+  // These are the ONLY free sections for now:
+  const FREE_KEYS = new Set(["Confidence", "Focus"]);
+
+  // Helper to display nicer titles from keys
+  const pretty = (key) =>
+    key
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (c) => c.toUpperCase())
+      .trim();
+
+  const goToCategory = (slug, isLocked) => {
+    if (isLocked) {
+      alert("This category is locked for now. Premium unlock coming soon!");
+      return;
+    }
+    router.push(`/category/${slug}`);
+  };
+
+  // Categories that exist in your affirmations data file
+  const categoryKeys = Object.keys(affirmations);
 
   return (
     <main style={{ padding: 20, fontFamily: "sans-serif" }}>
@@ -37,28 +47,50 @@ export default function Home() {
         🔓 Unlock Full Access (Coming Soon)
       </button>
 
-      {Object.keys(affirmations).map((category) => (
-        <div
-          key={category}
-          onClick={() => router.push(`/category/${category}`)}
-          style={{
-            padding: 16,
-            marginBottom: 12,
-            borderRadius: 12,
-            background: "#f5f5f5",
-            fontSize: 18,
-            cursor: "pointer",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span>{category}</span>
-          {lockedCategories.includes(category) && <span>🔒</span>}
-        </div>
-      ))}
+      {/* Free categories from data */}
+      {categoryKeys.map((key) => {
+        const isLocked = !FREE_KEYS.has(key);
+        return (
+          <div
+            key={key}
+            onClick={() => goToCategory(key, isLocked)}
+            style={{
+              padding: 16,
+              marginBottom: 12,
+              borderRadius: 12,
+              background: "#f5f5f5",
+              fontSize: 18,
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span>{pretty(key)}</span>
+            {isLocked && <span>🔒</span>}
+          </div>
+        );
+      })}
+
+      {/* Coach Notes ALWAYS exists (even though it's user-entered) */}
+      <div
+        onClick={() => goToCategory("coachNotes", false)}
+        style={{
+          padding: 16,
+          marginBottom: 12,
+          borderRadius: 12,
+          background: "#f5f5f5",
+          fontSize: 18,
+          cursor: "pointer",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <span>Coach Notes</span>
+        <span>✅</span>
+      </div>
     </main>
   );
 }
-
 
