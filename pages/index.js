@@ -27,8 +27,8 @@ export default function Home() {
 
   return (
     <main style={{ padding: 20, fontFamily: "sans-serif" }}>
-      <h1>Golf Affirmations</h1>
-      <p>Mental strength training for competitive and junior golfers.</p>
+      <h1>Golf Affirmations-Find Your Perfect Swing Mindset</h1>
+      <p>Elevate your mental game with positive affirmations designed specifically for golfers.  Build confidence, improve focus, and unlock your true potential on the course.</p>
 
       <button
         onClick={() => alert("Premium unlock is coming soon!")}
