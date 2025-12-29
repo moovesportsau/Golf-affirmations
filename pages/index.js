@@ -4,10 +4,10 @@ import { affirmations } from "../data/affirmations";
 export default function Home() {
   const router = useRouter();
 
-  // FREE categories only
+  // Free categories
   const FREE_KEYS = new Set(["Confidence", "Focus"]);
 
-  // Exact order you requested
+  // Exact display order
   const ORDERED_CATEGORIES = [
     "Confidence",
     "Focus",
@@ -20,14 +20,30 @@ export default function Home() {
     "Recovery",
   ];
 
-  // Pretty titles for display
-  const pretty = (key) => {
-    const map = {
-      PreRound: "Pre-Round",
-      TournamentMindset: "Tournament Mindset",
-      CourseManagement: "Course Management",
-    };
-    return map[key] || key;
+  // Display names
+  const TITLES = {
+    Confidence: "Confidence",
+    Focus: "Focus",
+    Technique: "Technique",
+    Growth: "Growth",
+    PreRound: "Pre-Round",
+    TournamentMindset: "Tournament Mindset",
+    CourseManagement: "Course Management",
+    Resilience: "Resilience",
+    Recovery: "Recovery",
+  };
+
+  // Section descriptions
+  const DESCRIPTIONS = {
+    Confidence: "Build belief in your swing, your preparation, and your ability to perform.",
+    Focus: "Stay present, calm, and committed to one shot at a time.",
+    Technique: "Reinforce trust in your fundamentals without overthinking mechanics.",
+    Growth: "Develop a long-term mindset focused on learning and improvement.",
+    PreRound: "Prepare mentally before you step onto the first tee.",
+    TournamentMindset: "Stay composed, adaptable, and confident under competition pressure.",
+    CourseManagement: "Make smart decisions that support consistent scoring.",
+    Resilience: "Bounce back quickly and stay mentally strong in tough moments.",
+    Recovery: "Reset emotionally after mistakes and refocus for the next shot.",
   };
 
   const goToCategory = (slug, isLocked) => {
@@ -61,7 +77,6 @@ export default function Home() {
       </button>
 
       {ORDERED_CATEGORIES.map((key) => {
-        // Skip if the category doesn’t exist in data
         if (!affirmations[key]) return null;
 
         const isLocked = !FREE_KEYS.has(key);
@@ -75,20 +90,38 @@ export default function Home() {
               marginBottom: 12,
               borderRadius: 12,
               background: "#f5f5f5",
-              fontSize: 18,
               cursor: "pointer",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
             }}
           >
-            <span>{pretty(key)}</span>
-            {isLocked && <span>🔒</span>}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontSize: 18,
+                fontWeight: 600,
+              }}
+            >
+              <span>{TITLES[key]}</span>
+              {isLocked && <span>🔒</span>}
+            </div>
+
+            <p
+              style={{
+                marginTop: 6,
+                marginBottom: 0,
+                fontSize: 14,
+                color: "#555",
+                lineHeight: 1.4,
+              }}
+            >
+              {DESCRIPTIONS[key]}
+            </p>
           </div>
         );
       })}
 
-      {/* Coach Notes – always last */}
+      {/* Coach Notes always last */}
       <div
         onClick={() => goToCategory("coachNotes", false)}
         style={{
@@ -96,15 +129,31 @@ export default function Home() {
           marginBottom: 12,
           borderRadius: 12,
           background: "#f5f5f5",
-          fontSize: 18,
           cursor: "pointer",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
         }}
       >
-        <span>Coach Notes</span>
-        <span>📝</span>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            fontSize: 18,
+            fontWeight: 600,
+          }}
+        >
+          <span>Coach Notes</span>
+          <span>📝</span>
+        </div>
+        <p
+          style={{
+            marginTop: 6,
+            marginBottom: 0,
+            fontSize: 14,
+            color: "#555",
+          }}
+        >
+          Your personal notes from coaches, practice sessions, or competitions.
+        </p>
       </div>
     </main>
   );
