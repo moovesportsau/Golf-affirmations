@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <main style={{ padding: 20, fontFamily: "sans-serif" }}>
-      <h1>Golf Affirmations-Find Your Perfect Swing Mindset</h1>
+      <h1>Golf Affirmations - Find Your Perfect Swing Mindset</h1>
       <p>Elevate your mental game with positive affirmations designed specifically for golfers.  Build confidence, improve focus, and unlock your true potential on the course.</p>
 
       <button
