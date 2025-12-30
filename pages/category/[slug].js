@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+mport { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { affirmations } from "../../data/affirmations";
 
@@ -20,6 +20,7 @@ export default function CategoryPage() {
     Recovery: "Recovery",
   };
 
+  // ---------- UI styles ----------
   const styles = {
     page: {
       minHeight: "100vh",
@@ -45,7 +46,9 @@ export default function CategoryPage() {
       padding: 18,
       background: "rgba(255,255,255,0.12)",
       border: "1px solid rgba(255,255,255,0.18)",
+      boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
       backdropFilter: "blur(10px)",
+      WebkitBackdropFilter: "blur(10px)",
       color: "white",
     },
     btn: {
@@ -66,10 +69,19 @@ export default function CategoryPage() {
     },
     tile: {
       marginTop: 14,
-      padding: 14,
+      padding: 16,
       borderRadius: 14,
       background: "rgba(0,0,0,0.3)",
       border: "1px solid rgba(255,255,255,0.2)",
+      userSelect: "none",
+      WebkitUserSelect: "none",
+      touchAction: "pan-y", // allow vertical scroll but still capture horizontal intent
+    },
+    quote: { fontSize: 16, lineHeight: 1.6, margin: 0 },
+    hint: {
+      marginTop: 10,
+      fontSize: 12,
+      color: "rgba(255,255,255,0.8)",
     },
   };
 
@@ -111,15 +123,16 @@ export default function CategoryPage() {
                 background: "rgba(0,0,0,0.3)",
                 color: "white",
                 border: "1px solid rgba(255,255,255,0.3)",
+                outline: "none",
               }}
             />
 
-            <div style={{ marginTop: 12, display: "flex", gap: 10 }}>
+            <div style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap" }}>
               <button
                 style={{ ...styles.btn, ...styles.btnPrimary }}
                 onClick={() => {
                   localStorage.setItem("coachNotes", notes);
-                  alert("Saved");
+                  alert("Saved ✅");
                 }}
               >
                 Save
@@ -127,13 +140,17 @@ export default function CategoryPage() {
               <button
                 style={{ ...styles.btn, ...styles.btnGhost }}
                 onClick={() => {
-                  setNotes("");
-                  localStorage.removeItem("coachNotes");
+                  if (confirm("Clear all notes?")) {
+                    setNotes("");
+                    localStorage.removeItem("coachNotes");
+                  }
                 }}
               >
                 Clear
               </button>
             </div>
+
+            <div style={styles.hint}>Your notes are saved on this device.</div>
           </main>
         </div>
       </div>
@@ -176,14 +193,66 @@ export default function CategoryPage() {
             </button>
             <h1>{title}</h1>
             <p>🔒 This category is locked. Premium coming soon.</p>
+            <button
+              style={{ ...styles.btn, ...styles.btnPrimary }}
+              onClick={() => alert("Premium unlock is coming soon!")}
+            >
+              Unlock (Coming Soon)
+            </button>
           </main>
         </div>
       </div>
     );
   }
 
+  // ---------- Swipe-enabled affirmations ----------
   const [index, setIndex] = useState(0);
+  useEffect(() => setIndex(0), [categoryKey]);
+
+  const next = () => setIndex((i) => (i + 1) % list.length);
+  const prev = () => setIndex((i) => (i - 1 + list.length) % list.length);
+
   const current = list[index];
+
+  // Touch swipe tracking
+  const startX = useRef(null);
+  const startY = useRef(null);
+  const isSwiping = useRef(false);
+
+  const onTouchStart = (e) => {
+    const t = e.touches[0];
+    startX.current = t.clientX;
+    startY.current = t.clientY;
+    isSwiping.current = true;
+  };
+
+  const onTouchMove = (e) => {
+    // If user scrolls vertically, don’t treat it as swipe
+    if (!isSwiping.current) return;
+    const t = e.touches[0];
+    const dx = Math.abs(t.clientX - startX.current);
+    const dy = Math.abs(t.clientY - startY.current);
+    if (dy > dx + 10) {
+      isSwiping.current = false;
+    }
+  };
+
+  const onTouchEnd = (e) => {
+    if (!startX.current || !isSwiping.current) return;
+
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX.current;
+
+    // Threshold: how far you need to swipe
+    const THRESHOLD = 45;
+
+    if (dx <= -THRESHOLD) next(); // swipe left
+    if (dx >= THRESHOLD) prev();  // swipe right
+
+    startX.current = null;
+    startY.current = null;
+    isSwiping.current = false;
+  };
 
   return (
     <div style={styles.page}>
@@ -196,26 +265,35 @@ export default function CategoryPage() {
             ← Back
           </button>
 
-          <h1>{title}</h1>
-
-          <div style={styles.tile}>
-            <p>“{current}”</p>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+            <h1 style={{ marginBottom: 6 }}>{title}</h1>
+            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>
+              {index + 1} / {list.length}
+            </div>
           </div>
 
-          <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
-            <button
-              style={{ ...styles.btn, ...styles.btnGhost }}
-              onClick={() =>
-                setIndex((i) => (i - 1 + list.length) % list.length)
-              }
-            >
-              Prev
+          <div
+            style={styles.tile}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
+            <p style={styles.quote}>“{current}”</p>
+            <div style={styles.hint}>Swipe left/right, or use the buttons below.</div>
+          </div>
+
+          <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
+            <button style={{ ...styles.btn, ...styles.btnGhost }} onClick={prev}>
+              ← Prev
+            </button>
+            <button style={{ ...styles.btn, ...styles.btnPrimary }} onClick={next}>
+              Next →
             </button>
             <button
-              style={{ ...styles.btn, ...styles.btnPrimary }}
-              onClick={() => setIndex((i) => (i + 1) % list.length)}
+              style={{ ...styles.btn, ...styles.btnGhost }}
+              onClick={() => setIndex(Math.floor(Math.random() * list.length))}
             >
-              Next
+              Random
             </button>
           </div>
         </main>
@@ -223,4 +301,3 @@ export default function CategoryPage() {
     </div>
   );
 }
-
