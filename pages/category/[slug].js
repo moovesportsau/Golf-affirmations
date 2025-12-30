@@ -1,4 +1,4 @@
-mport { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { affirmations } from "../../data/affirmations";
 
