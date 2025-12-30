@@ -5,10 +5,8 @@ import { affirmations } from "../data/affirmations";
 export default function Home() {
   const router = useRouter();
 
-  // Free categories
   const FREE_KEYS = new Set(["Confidence", "Focus"]);
 
-  // Exact display order
   const ORDERED_CATEGORIES = [
     "Confidence",
     "Focus",
@@ -21,7 +19,6 @@ export default function Home() {
     "Recovery",
   ];
 
-  // Display names
   const TITLES = {
     Confidence: "Confidence",
     Focus: "Focus",
@@ -34,7 +31,6 @@ export default function Home() {
     Recovery: "Recovery",
   };
 
-  // Section descriptions
   const DESCRIPTIONS = {
     Confidence:
       "Build belief in your swing, your preparation, and your ability to perform.",
@@ -58,7 +54,7 @@ export default function Home() {
     router.push(`/category/${slug}`);
   };
 
-  // ---------- Affirmation of the Day (free only) ----------
+  // ---------- Affirmation of the Day ----------
   const todayKey = useMemo(() => {
     const d = new Date();
     const yyyy = d.getFullYear();
@@ -90,12 +86,6 @@ export default function Home() {
     return h;
   };
 
-  const pickForToday = () => {
-    if (!freePool.length) return null;
-    const idx = hashString(todayKey) % freePool.length;
-    return freePool[idx];
-  };
-
   useEffect(() => {
     if (!freePool.length) return;
 
@@ -112,59 +102,59 @@ export default function Home() {
       } catch (_) {}
     }
 
-    const pick = pickForToday();
+    const idx = hashString(todayKey) % freePool.length;
+    const pick = freePool[idx];
     setAotd(pick);
-    if (pick) localStorage.setItem(storageKey, JSON.stringify(pick));
-  }, [todayKey, freePool]); // eslint-disable-line react-hooks/exhaustive-deps
+    localStorage.setItem(storageKey, JSON.stringify(pick));
+  }, [todayKey, freePool]);
 
   const newFreePick = () => {
     if (!freePool.length) return;
+
     const storageKey = `aotd:${todayKey}`;
     const currentText = aotd?.text;
 
-    let next = null;
-    if (freePool.length === 1) {
-      next = freePool[0];
-    } else {
-      for (let tries = 0; tries < 10; tries++) {
-        const idx = Math.floor(Math.random() * freePool.length);
-        if (freePool[idx].text !== currentText) {
-          next = freePool[idx];
+    let next = freePool[Math.floor(Math.random() * freePool.length)];
+    if (freePool.length > 1) {
+      for (let i = 0; i < 10; i++) {
+        const candidate = freePool[Math.floor(Math.random() * freePool.length)];
+        if (candidate.text !== currentText) {
+          next = candidate;
           break;
         }
       }
-      next = next || freePool[0];
     }
 
     setAotd(next);
     localStorage.setItem(storageKey, JSON.stringify(next));
   };
 
-  // ---------- UI styles ----------
+  // ---------- Mobile-first styles ----------
   const styles = {
     page: {
       minHeight: "100vh",
-      padding: 20,
-      fontFamily:
-        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
       backgroundImage: 'url("/golf-bg.jpg")',
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundAttachment: "fixed",
+      fontFamily:
+        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     },
     overlay: {
       minHeight: "100vh",
-      padding: 20,
-      background:
-        "linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35))",
+      paddingTop: "max(16px, env(safe-area-inset-top))",
+      paddingBottom: "max(16px, env(safe-area-inset-bottom))",
+      paddingLeft: "max(14px, env(safe-area-inset-left))",
+      paddingRight: "max(14px, env(safe-area-inset-right))",
+      background: "linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.42))",
       display: "flex",
       justifyContent: "center",
     },
     card: {
       width: "100%",
-      maxWidth: 720,
+      maxWidth: 560, // better on phones + still nice on desktop
       borderRadius: 18,
-      padding: 18,
+      padding: 16,
       background: "rgba(255,255,255,0.12)",
       border: "1px solid rgba(255,255,255,0.18)",
       boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
@@ -172,42 +162,8 @@ export default function Home() {
       WebkitBackdropFilter: "blur(10px)",
       color: "white",
     },
-    h1: { margin: "6px 0 8px", fontSize: 26, lineHeight: 1.2 },
-    p: { margin: "0 0 16px", color: "rgba(255,255,255,0.9)", lineHeight: 1.5 },
-    primaryBtn: {
-      width: "100%",
-      padding: "14px 14px",
-      fontSize: 16,
-      borderRadius: 12,
-      background: "white",
-      color: "#111",
-      border: "none",
-      cursor: "pointer",
-      fontWeight: 700,
-      marginBottom: 16,
-    },
-    tile: {
-      padding: 14,
-      borderRadius: 14,
-      background: "rgba(255,255,255,0.12)",
-      border: "1px solid rgba(255,255,255,0.18)",
-      cursor: "pointer",
-      marginBottom: 12,
-    },
-    tileTitleRow: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      fontSize: 18,
-      fontWeight: 700,
-    },
-    tileDesc: {
-      marginTop: 6,
-      marginBottom: 0,
-      fontSize: 14,
-      color: "rgba(255,255,255,0.85)",
-      lineHeight: 1.4,
-    },
+    h1: { margin: "4px 0 8px", fontSize: 22, lineHeight: 1.2 },
+    p: { margin: "0 0 14px", color: "rgba(255,255,255,0.92)", lineHeight: 1.5, fontSize: 14 },
     aotdCard: {
       padding: 14,
       borderRadius: 14,
@@ -224,105 +180,110 @@ export default function Home() {
       border: "1px solid rgba(255,255,255,0.22)",
       color: "white",
     },
-    smallBtn: {
-      padding: "10px 12px",
-      borderRadius: 12,
-      border: "1px solid rgba(255,255,255,0.22)",
-      cursor: "pointer",
-      background: "rgba(255,255,255,0.12)",
-      color: "white",
-      fontWeight: 600,
-    },
-    smallBtnPrimary: {
-      padding: "10px 12px",
+    row: { display: "flex", gap: 10, flexWrap: "wrap", marginTop: 10 },
+    btnPrimary: {
+      padding: "12px 14px",
       borderRadius: 12,
       border: "none",
       cursor: "pointer",
       background: "white",
       color: "#111",
+      fontWeight: 900,
+      width: "100%",
+      fontSize: 15,
+    },
+    btnSoft: {
+      padding: "12px 14px",
+      borderRadius: 12,
+      border: "1px solid rgba(255,255,255,0.22)",
+      cursor: "pointer",
+      background: "rgba(255,255,255,0.12)",
+      color: "white",
+      fontWeight: 700,
+      fontSize: 14,
+      flex: "1 1 auto",
+    },
+    tile: {
+      padding: 14,
+      borderRadius: 14,
+      background: "rgba(255,255,255,0.12)",
+      border: "1px solid rgba(255,255,255,0.18)",
+      marginBottom: 12,
+      cursor: "pointer",
+    },
+    tileTitleRow: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      fontSize: 17,
       fontWeight: 800,
     },
-    row: { display: "flex", gap: 10, flexWrap: "wrap", marginTop: 10 },
+    tileDesc: {
+      marginTop: 6,
+      marginBottom: 0,
+      fontSize: 13,
+      color: "rgba(255,255,255,0.88)",
+      lineHeight: 1.35,
+    },
   };
 
   return (
     <div style={styles.page}>
       <div style={styles.overlay}>
         <main style={styles.card}>
-          <h1 style={styles.h1}>
-            Golf Affirmations - Find Your Perfect Swing Mindset
-          </h1>
+          <h1 style={styles.h1}>Golf Affirmations - Find Your Perfect Swing Mindset</h1>
           <p style={styles.p}>
-            Elevate your mental game with positive affirmations designed
-            specifically for golfers. Build confidence, improve focus, and
-            unlock your true potential on the course.
+            Elevate your mental game with positive affirmations designed specifically for golfers.
+            Build confidence, improve focus, and unlock your true potential on the course.
           </p>
 
-          {/* Affirmation of the Day */}
           <div style={styles.aotdCard}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: 8,
-              }}
-            >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <strong>Affirmation of the Day</strong>
-              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>
-                {todayKey}
-              </span>
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>{todayKey}</span>
             </div>
 
             {aotd ? (
               <>
-                <div style={{ fontSize: 16, lineHeight: 1.5 }}>
+                <div style={{ fontSize: 15, lineHeight: 1.55, marginTop: 10 }}>
                   “{aotd.text}”
                 </div>
 
                 <div style={{ marginTop: 10 }}>
-                  <span style={styles.tag}>
-                    {TITLES[aotd.category] || aotd.category}
-                  </span>
+                  <span style={styles.tag}>{TITLES[aotd.category] || aotd.category}</span>
                 </div>
 
                 <div style={styles.row}>
                   <button
                     onClick={() => router.push(`/category/${aotd.category}`)}
-                    style={styles.smallBtnPrimary}
+                    style={{ ...styles.btnSoft, flex: "1 1 180px" }}
                   >
                     View {TITLES[aotd.category] || aotd.category}
                   </button>
-                  <button onClick={newFreePick} style={styles.smallBtn}>
+                  <button onClick={newFreePick} style={{ ...styles.btnSoft, flex: "1 1 120px" }}>
                     New one
                   </button>
                 </div>
               </>
             ) : (
-              <div style={{ color: "rgba(255,255,255,0.85)" }}>
+              <div style={{ color: "rgba(255,255,255,0.85)", marginTop: 10 }}>
                 Add affirmations to Confidence and Focus to enable this section.
               </div>
             )}
           </div>
 
-          <button
-            onClick={() => alert("Premium unlock is coming soon!")}
-            style={styles.primaryBtn}
-          >
+          <button onClick={() => alert("Premium unlock is coming soon!")} style={styles.btnPrimary}>
             🔓 Unlock Full Access (Coming Soon)
           </button>
 
-          {/* Categories */}
+          <div style={{ height: 14 }} />
+
           {ORDERED_CATEGORIES.map((key) => {
             if (!affirmations[key]) return null;
             const isLocked = !FREE_KEYS.has(key);
 
             return (
-              <div
-                key={key}
-                onClick={() => goToCategory(key, isLocked)}
-                style={styles.tile}
-              >
+              <div key={key} onClick={() => goToCategory(key, isLocked)} style={styles.tile}>
                 <div style={styles.tileTitleRow}>
                   <span>{TITLES[key]}</span>
                   {isLocked && <span>🔒</span>}
@@ -332,11 +293,7 @@ export default function Home() {
             );
           })}
 
-          {/* Coach Notes always last */}
-          <div
-            onClick={() => router.push(`/category/coachNotes`)}
-            style={styles.tile}
-          >
+          <div onClick={() => router.push(`/category/coachNotes`)} style={styles.tile}>
             <div style={styles.tileTitleRow}>
               <span>Coach Notes</span>
               <span>📝</span>
@@ -350,4 +307,3 @@ export default function Home() {
     </div>
   );
 }
-
