@@ -70,7 +70,12 @@ export default function CategoryPage() {
       fontSize: 14,
     },
     title: { margin: "6px 0 6px", fontSize: 20, lineHeight: 1.2 },
-    sub: { margin: "0 0 12px", color: "rgba(255,255,255,0.9)", fontSize: 13, lineHeight: 1.4 },
+    sub: {
+      margin: "0 0 12px",
+      color: "rgba(255,255,255,0.9)",
+      fontSize: 13,
+      lineHeight: 1.4,
+    },
     tile: {
       marginTop: 10,
       padding: 16,
@@ -80,6 +85,11 @@ export default function CategoryPage() {
       userSelect: "none",
       WebkitUserSelect: "none",
       touchAction: "pan-y",
+      overflow: "hidden",
+    },
+    quoteWrap: {
+      transition: "transform 180ms ease, opacity 180ms ease",
+      willChange: "transform, opacity",
     },
     quote: { fontSize: 16, lineHeight: 1.6, margin: 0 },
     hint: { marginTop: 10, fontSize: 12, color: "rgba(255,255,255,0.8)" },
@@ -122,7 +132,7 @@ export default function CategoryPage() {
 
   if (!slug) return null;
 
-  // Coach Notes
+  // ---------------- Coach Notes ----------------
   if (slug === "coachNotes") {
     const [notes, setNotes] = useState("");
 
@@ -179,12 +189,12 @@ export default function CategoryPage() {
     );
   }
 
-  // Normal categories
+  // ---------------- Categories ----------------
   const categoryKey = String(slug);
   const title = TITLES[categoryKey] || categoryKey;
   const list = affirmations?.[categoryKey];
 
-  // Locked
+  // Locked screen
   if (!FREE_KEYS.has(categoryKey)) {
     return (
       <div style={styles.page}>
@@ -227,16 +237,76 @@ export default function CategoryPage() {
     );
   }
 
+  // ---------- Animation state ----------
   const [index, setIndex] = useState(0);
-  useEffect(() => setIndex(0), [categoryKey]);
+  const [offsetX, setOffsetX] = useState(0);
+  const [opacity, setOpacity] = useState(1);
+  const animatingRef = useRef(false);
+  const timersRef = useRef([]);
 
-  const next = () => setIndex((i) => (i + 1) % list.length);
-  const prev = () => setIndex((i) => (i - 1 + list.length) % list.length);
-  const randomPick = () => setIndex(Math.floor(Math.random() * list.length));
+  useEffect(() => {
+    setIndex(0);
+    setOffsetX(0);
+    setOpacity(1);
+    animatingRef.current = false;
+    // cleanup any timers
+    timersRef.current.forEach((t) => clearTimeout(t));
+    timersRef.current = [];
+  }, [categoryKey]);
+
+  const clearTimers = () => {
+    timersRef.current.forEach((t) => clearTimeout(t));
+    timersRef.current = [];
+  };
+
+  const animateToIndex = (nextIndex, direction) => {
+    if (animatingRef.current) return;
+    animatingRef.current = true;
+    clearTimers();
+
+    const out = direction === "next" ? -18 : 18;
+    const incoming = direction === "next" ? 18 : -18;
+
+    // slide/fade out current
+    setOffsetX(out);
+    setOpacity(0);
+
+    // swap the text while hidden, then slide/fade in
+    const t1 = setTimeout(() => {
+      setIndex(nextIndex);
+      setOffsetX(incoming);
+      setOpacity(0);
+
+      // next tick: animate to normal
+      const t2 = setTimeout(() => {
+        setOffsetX(0);
+        setOpacity(1);
+
+        // release lock after animation finishes
+        const t3 = setTimeout(() => {
+          animatingRef.current = false;
+        }, 190);
+
+        timersRef.current.push(t3);
+      }, 20);
+
+      timersRef.current.push(t2);
+    }, 140);
+
+    timersRef.current.push(t1);
+  };
+
+  const next = () => animateToIndex((index + 1) % list.length, "next");
+  const prev = () => animateToIndex((index - 1 + list.length) % list.length, "prev");
+  const randomPick = () => {
+    const r = Math.floor(Math.random() * list.length);
+    if (r === index) return next();
+    animateToIndex(r, r > index ? "next" : "prev");
+  };
 
   const current = list[index];
 
-  // Swipe
+  // ---------- Swipe ----------
   const startX = useRef(null);
   const startY = useRef(null);
   const isSwiping = useRef(false);
@@ -293,7 +363,16 @@ export default function CategoryPage() {
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            <p style={styles.quote}>“{current}”</p>
+            <div
+              style={{
+                ...styles.quoteWrap,
+                transform: `translateX(${offsetX}px)`,
+                opacity,
+              }}
+            >
+              <p style={styles.quote}>“{current}”</p>
+            </div>
+            <div style={styles.hint}>Subtle animation is on ✅</div>
           </div>
 
           <div style={styles.row}>
