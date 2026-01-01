@@ -33,12 +33,13 @@ export default function CategoryPage() {
     overlay: {
       minHeight: "100vh",
       paddingTop: "max(12px, env(safe-area-inset-top))",
-      paddingBottom: "max(12px, env(safe-area-inset-bottom))",
+      paddingBottom: "max(24px, env(safe-area-inset-bottom))",
       paddingLeft: "12px",
       paddingRight: "12px",
+     ;
       background: "linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.42))",
       display: "flex",
-      justifyContent: "center",
+      alignItems: "flex-start",
     },
     card: {
       width: "100%",
