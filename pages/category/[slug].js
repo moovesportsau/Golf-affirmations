@@ -32,10 +32,7 @@ export default function CategoryPage() {
     },
     overlay: {
       minHeight: "100vh",
-      paddingTop: "max(16px, env(safe-area-inset-top))",
-      paddingBottom: "max(16px, env(safe-area-inset-bottom))",
-      paddingLeft: "max(14px, env(safe-area-inset-left))",
-      paddingRight: "max(14px, env(safe-area-inset-right))",
+      padding: "max(16px, env(safe-area-inset-top)) 14px max(16px, env(safe-area-inset-bottom))",
       background: "linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.42))",
       display: "flex",
       justifyContent: "center",
@@ -56,83 +53,64 @@ export default function CategoryPage() {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      gap: 10,
       marginBottom: 10,
     },
     backBtn: {
-      padding: "12px 14px",
+      padding: "10px 14px",
       borderRadius: 12,
       border: "1px solid rgba(255,255,255,0.25)",
-      cursor: "pointer",
       background: "rgba(255,255,255,0.12)",
       color: "white",
       fontWeight: 800,
-      fontSize: 14,
+      cursor: "pointer",
     },
-    title: { margin: "6px 0 6px", fontSize: 20, lineHeight: 1.2 },
-    sub: {
-      margin: "0 0 12px",
-      color: "rgba(255,255,255,0.9)",
-      fontSize: 13,
-      lineHeight: 1.4,
-    },
+    title: { fontSize: 20, marginBottom: 6 },
+    sub: { fontSize: 13, color: "rgba(255,255,255,0.9)" },
     tile: {
-      marginTop: 10,
+      marginTop: 14,
       padding: 16,
       borderRadius: 14,
       background: "rgba(0,0,0,0.28)",
       border: "1px solid rgba(255,255,255,0.2)",
       userSelect: "none",
-      WebkitUserSelect: "none",
       touchAction: "pan-y",
-      overflow: "hidden",
     },
     quoteWrap: {
       transition: "transform 180ms ease, opacity 180ms ease",
       willChange: "transform, opacity",
     },
-    quote: { fontSize: 16, lineHeight: 1.6, margin: 0 },
-    hint: { marginTop: 10, fontSize: 12, color: "rgba(255,255,255,0.8)" },
-    row: { display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 },
+    quote: { fontSize: 16, lineHeight: 1.6 },
+    row: { display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14 },
     primaryBtn: {
-      padding: "12px 14px",
+      padding: "12px",
       borderRadius: 12,
       border: "none",
-      cursor: "pointer",
       background: "white",
       color: "#111",
       fontWeight: 900,
-      fontSize: 15,
       flex: "1 1 140px",
+      cursor: "pointer",
     },
     softBtn: {
-      padding: "12px 14px",
+      padding: "12px",
       borderRadius: 12,
-      border: "1px solid rgba(255,255,255,0.22)",
-      cursor: "pointer",
+      border: "1px solid rgba(255,255,255,0.25)",
       background: "rgba(255,255,255,0.12)",
       color: "white",
       fontWeight: 800,
-      fontSize: 14,
       flex: "1 1 120px",
+      cursor: "pointer",
     },
-    textarea: {
-      width: "100%",
-      minHeight: 240,
-      padding: 12,
-      borderRadius: 12,
-      border: "1px solid rgba(255,255,255,0.22)",
-      background: "rgba(0,0,0,0.28)",
-      color: "white",
-      outline: "none",
-      fontSize: 14,
-      lineHeight: 1.5,
+    toast: {
+      marginTop: 10,
+      fontSize: 12,
+      color: "#b8ffcf",
     },
   };
 
   if (!slug) return null;
 
-  // ---------------- Coach Notes ----------------
+  /* ---------------- Coach Notes ---------------- */
   if (slug === "coachNotes") {
     const [notes, setNotes] = useState("");
 
@@ -145,43 +123,25 @@ export default function CategoryPage() {
       <div style={styles.page}>
         <div style={styles.overlay}>
           <main style={styles.card}>
-            <div style={styles.topRow}>
-              <button style={styles.backBtn} onClick={() => router.push("/")}>
-                ← Back
-              </button>
-            </div>
-
+            <button style={styles.backBtn} onClick={() => router.push("/")}>
+              ← Back
+            </button>
             <h1 style={styles.title}>Coach Notes</h1>
-            <p style={styles.sub}>Add notes from coaches, practice, or competitions.</p>
-
             <textarea
-              style={styles.textarea}
+              style={{ width: "100%", minHeight: 240, marginTop: 12 }}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Type your coach notes here…"
             />
-
             <div style={styles.row}>
               <button
                 style={styles.primaryBtn}
                 onClick={() => {
                   localStorage.setItem("coachNotes", notes);
-                  alert("Saved ✅");
+                  alert("Saved");
                 }}
               >
                 Save
               </button>
-              <button
-                style={styles.softBtn}
-                onClick={() => {
-                  if (confirm("Clear all notes?")) {
-                    setNotes("");
-                    localStorage.removeItem("coachNotes");
-                  }
-                }}
-              >
-                Clear
-              </button>
             </div>
           </main>
         </div>
@@ -189,156 +149,76 @@ export default function CategoryPage() {
     );
   }
 
-  // ---------------- Categories ----------------
-  const categoryKey = String(slug);
-  const title = TITLES[categoryKey] || categoryKey;
-  const list = affirmations?.[categoryKey];
+  /* ---------------- Categories ---------------- */
+  const list = affirmations?.[slug];
+  const title = TITLES[slug] || slug;
 
-  // Locked screen
-  if (!FREE_KEYS.has(categoryKey)) {
+  if (!FREE_KEYS.has(slug)) {
     return (
       <div style={styles.page}>
         <div style={styles.overlay}>
           <main style={styles.card}>
-            <div style={styles.topRow}>
-              <button style={styles.backBtn} onClick={() => router.push("/")}>
-                ← Back
-              </button>
-            </div>
-            <h1 style={styles.title}>{title}</h1>
-            <p style={styles.sub}>🔒 This category is locked. Premium coming soon.</p>
-            <button
-              style={{ ...styles.primaryBtn, width: "100%", flex: "unset" }}
-              onClick={() => alert("Premium unlock is coming soon!")}
-            >
-              Unlock (Coming Soon)
+            <button style={styles.backBtn} onClick={() => router.push("/")}>
+              ← Back
             </button>
+            <h1 style={styles.title}>{title}</h1>
+            <p style={styles.sub}>🔒 This category is locked.</p>
           </main>
         </div>
       </div>
     );
   }
 
-  if (!Array.isArray(list) || list.length === 0) {
-    return (
-      <div style={styles.page}>
-        <div style={styles.overlay}>
-          <main style={styles.card}>
-            <div style={styles.topRow}>
-              <button style={styles.backBtn} onClick={() => router.push("/")}>
-                ← Back
-              </button>
-            </div>
-            <h1 style={styles.title}>Not found</h1>
-            <p style={styles.sub}>This category doesn’t exist yet.</p>
-          </main>
-        </div>
-      </div>
-    );
-  }
-
-  // ---------- Animation state ----------
   const [index, setIndex] = useState(0);
   const [offsetX, setOffsetX] = useState(0);
   const [opacity, setOpacity] = useState(1);
-  const animatingRef = useRef(false);
-  const timersRef = useRef([]);
+  const [toast, setToast] = useState("");
+  const animating = useRef(false);
 
   useEffect(() => {
     setIndex(0);
-    setOffsetX(0);
-    setOpacity(1);
-    animatingRef.current = false;
-    // cleanup any timers
-    timersRef.current.forEach((t) => clearTimeout(t));
-    timersRef.current = [];
-  }, [categoryKey]);
+  }, [slug]);
 
-  const clearTimers = () => {
-    timersRef.current.forEach((t) => clearTimeout(t));
-    timersRef.current = [];
-  };
+  const animate = (nextIndex, dir) => {
+    if (animating.current) return;
+    animating.current = true;
 
-  const animateToIndex = (nextIndex, direction) => {
-    if (animatingRef.current) return;
-    animatingRef.current = true;
-    clearTimers();
-
-    const out = direction === "next" ? -18 : 18;
-    const incoming = direction === "next" ? 18 : -18;
-
-    // slide/fade out current
-    setOffsetX(out);
+    setOffsetX(dir === "next" ? -18 : 18);
     setOpacity(0);
 
-    // swap the text while hidden, then slide/fade in
-    const t1 = setTimeout(() => {
+    setTimeout(() => {
       setIndex(nextIndex);
-      setOffsetX(incoming);
+      setOffsetX(dir === "next" ? 18 : -18);
       setOpacity(0);
 
-      // next tick: animate to normal
-      const t2 = setTimeout(() => {
+      setTimeout(() => {
         setOffsetX(0);
         setOpacity(1);
-
-        // release lock after animation finishes
-        const t3 = setTimeout(() => {
-          animatingRef.current = false;
-        }, 190);
-
-        timersRef.current.push(t3);
-      }, 20);
-
-      timersRef.current.push(t2);
+        animating.current = false;
+      }, 180);
     }, 140);
-
-    timersRef.current.push(t1);
   };
 
-  const next = () => animateToIndex((index + 1) % list.length, "next");
-  const prev = () => animateToIndex((index - 1 + list.length) % list.length, "prev");
-  const randomPick = () => {
-    const r = Math.floor(Math.random() * list.length);
-    if (r === index) return next();
-    animateToIndex(r, r > index ? "next" : "prev");
-  };
+  const next = () => animate((index + 1) % list.length, "next");
+  const prev = () => animate((index - 1 + list.length) % list.length, "prev");
 
-  const current = list[index];
+  /* ---------------- SHARE ---------------- */
+  const shareAffirmation = async () => {
+    const text = `“${list[index]}” — ${title}\n\nThe Mental Caddie`;
 
-  // ---------- Swipe ----------
-  const startX = useRef(null);
-  const startY = useRef(null);
-  const isSwiping = useRef(false);
+    try {
+      if (navigator.share) {
+        await navigator.share({ text });
+      } else {
+        await navigator.clipboard.writeText(text);
+        setToast("Copied to clipboard");
+      }
+    } catch {
+      await navigator.clipboard.writeText(text);
+      setToast("Copied to clipboard");
+    }
 
-  const onTouchStart = (e) => {
-    const t = e.touches[0];
-    startX.current = t.clientX;
-    startY.current = t.clientY;
-    isSwiping.current = true;
-  };
-
-  const onTouchMove = (e) => {
-    if (!isSwiping.current) return;
-    const t = e.touches[0];
-    const dx = Math.abs(t.clientX - startX.current);
-    const dy = Math.abs(t.clientY - startY.current);
-    if (dy > dx + 10) isSwiping.current = false;
-  };
-
-  const onTouchEnd = (e) => {
-    if (!startX.current || !isSwiping.current) return;
-
-    const t = e.changedTouches[0];
-    const dx = t.clientX - startX.current;
-    const THRESHOLD = 45;
-
-    if (dx <= -THRESHOLD) next();
-    if (dx >= THRESHOLD) prev();
-
-    startX.current = null;
-    startY.current = null;
-    isSwiping.current = false;
+    setTimeout(() => setToast(""), 2000);
   };
 
   return (
@@ -349,20 +229,14 @@ export default function CategoryPage() {
             <button style={styles.backBtn} onClick={() => router.push("/")}>
               ← Back
             </button>
-            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>
-              {index + 1} / {list.length}
+            <div style={{ fontSize: 12 }}>
+              {index + 1}/{list.length}
             </div>
           </div>
 
           <h1 style={styles.title}>{title}</h1>
-          <p style={styles.sub}>Swipe left/right, or use the buttons.</p>
 
-          <div
-            style={styles.tile}
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-          >
+          <div style={styles.tile}>
             <div
               style={{
                 ...styles.quoteWrap,
@@ -370,9 +244,8 @@ export default function CategoryPage() {
                 opacity,
               }}
             >
-              <p style={styles.quote}>“{current}”</p>
+              <p style={styles.quote}>“{list[index]}”</p>
             </div>
-            <div style={styles.hint}>Subtle animation is on ✅</div>
           </div>
 
           <div style={styles.row}>
@@ -382,10 +255,12 @@ export default function CategoryPage() {
             <button style={styles.primaryBtn} onClick={next}>
               Next →
             </button>
-            <button style={styles.softBtn} onClick={randomPick}>
-              Random
+            <button style={styles.softBtn} onClick={shareAffirmation}>
+              📤 Share
             </button>
           </div>
+
+          {toast && <div style={styles.toast}>{toast}</div>}
         </main>
       </div>
     </div>
