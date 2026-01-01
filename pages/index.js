@@ -231,7 +231,7 @@ export default function Home() {
     <div style={styles.page}>
       <div style={styles.overlay}>
         <main style={styles.card}>
-          <h1 style={styles.h1}>Golf Affirmations - Find Your Perfect Swing Mindset</h1>
+          <h1 style={styles.h1}>The Mental Caddie</h1>
           <p style={styles.p}>
             Elevate your mental game with positive affirmations designed specifically for golfers.
             Build confidence, improve focus, and unlock your true potential on the course.

@@ -14,7 +14,7 @@ export default function Document() {
         {/* iOS PWA */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Golf Affirmations" />
+        <meta name="apple-mobile-web-app-title" content="The Mental Caddie" />
 
         {/* Icons */}
         <link rel="icon" href="/icon-192.png" />
