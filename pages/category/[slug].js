@@ -23,7 +23,7 @@ export default function CategoryPage() {
   /* ---------------- Mobile-tuned styles ---------------- */
   const styles = {
     page: {
-      minHeight: "100dvh",
+      minHeight: "var(--app-height)",
       backgroundImage: 'url("/golf-bg.jpg")',
       backgroundSize: "cover",
       backgroundPosition: "center",
@@ -32,7 +32,7 @@ export default function CategoryPage() {
         '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     },
     overlay: {
-      minHeight: "100vh",
+      minHeight: "var(--app-height)",
       paddingTop: "max(12px, env(safe-area-inset-top))",
       paddingBottom: "max(24px, env(safe-area-inset-bottom))",
       paddingLeft: "12px",

@@ -13,17 +13,50 @@ export default function Document() {
 
         {/* iOS PWA */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="The Mental Caddie" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
+        <meta
+          name="apple-mobile-web-app-title"
+          content="The Mental Caddie"
+        />
 
         {/* Icons */}
         <link rel="icon" href="/icon-192-v2.png" />
-        <link rel="apple-touch-icon" sizes="192x192" href="/icon-192-v2.png" />
-        <link rel="apple-touch-icon" sizes="512x512" href="/icon-512-v2.png" />
-        <link rel="apple-touch-icon-precomposed" href="/icon-192-v2.png" />
+        <link
+          rel="apple-touch-icon"
+          sizes="192x192"
+          href="/icon-192-v2.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="512x512"
+          href="/icon-512-v2.png"
+        />
+        <link
+          rel="apple-touch-icon-precomposed"
+          href="/icon-192-v2.png"
+        />
 
-        {/* Mobile safe area */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        {/* ✅ iOS PWA height fix */}
+        <style>{`:root { --app-height: 100vh; }`}</style>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                function setAppHeight() {
+                  document.documentElement.style.setProperty(
+                    '--app-height',
+                    window.innerHeight + 'px'
+                  );
+                }
+                setAppHeight();
+                window.addEventListener('resize', setAppHeight);
+              })();
+            `,
+          }}
+        />
       </Head>
       <body>
         <Main />
