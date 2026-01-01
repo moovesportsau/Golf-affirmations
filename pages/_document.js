@@ -18,7 +18,9 @@ export default function Document() {
 
         {/* Icons */}
         <link rel="icon" href="/icon-192.png" />
-        <link rel="apple-touch-icon" href="/icon-192.png" />
+        <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
+        <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
+        <link rel="apple-touch-icon-precomposed" href="/icon-192.png" />
 
         {/* Mobile safe area */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
