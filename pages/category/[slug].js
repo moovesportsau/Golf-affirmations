@@ -233,6 +233,55 @@ export default function CategoryPage() {
   const next = () => animate((index + 1) % list.length, "next");
   const prev = () => animate((index - 1 + list.length) % list.length, "prev");
 
+ /* ---------------- FAVORITES ---------------- */
+  const FAVORITES_KEY = "tmc:favorites";
+
+  const getFavorites = () => {
+    try {
+      const raw = localStorage.getItem(FAVORITES_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const [isFav, setIsFav] = useState(false);
+
+  useEffect(() => {
+    // Update heart when the quote changes
+    try {
+      const favs = getFavorites();
+      const currentText = list?.[index];
+      setIsFav(favs.some((f) => f?.text === currentText));
+    } catch {
+      setIsFav(false);
+    }
+  }, [index, slug]); // slug changes when you change category
+
+  const toggleFavorite = () => {
+    const currentText = list[index];
+    const category = title;
+
+    const favs = getFavorites();
+    const exists = favs.some((f) => f?.text === currentText);
+
+    let nextFavs;
+    if (exists) {
+      nextFavs = favs.filter((f) => f?.text !== currentText);
+      setIsFav(false);
+      setToast("Removed from Favorites");
+    } else {
+      nextFavs = [
+        { text: currentText, category, addedAt: Date.now() },
+        ...favs,
+      ];
+      setIsFav(true);
+      setToast("Saved to Favorites");
+    }
+
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(nextFavs));
+    setTimeout(() => setToast(""), 1800);
+  };
   const shareAffirmation = async () => {
     const text = `“${list[index]}” — ${title}\n\nThe Mental Caddie`;
     try {
@@ -285,6 +334,9 @@ export default function CategoryPage() {
             </button>
             <button style={styles.softBtn} onClick={shareAffirmation}>
               📤 Share
+            </button>
+            <button style={styles.softBtn} onClick={toggleFavorite}>
+              {isFav ? "❤️ Saved" : "🤍 Favorite"}
             </button>
           </div>
 
