@@ -36,10 +36,10 @@ export default function CategoryPage() {
       paddingBottom: "max(24px, env(safe-area-inset-bottom))",
       paddingLeft: "12px",
       paddingRight: "12px",
-     ;
       background: "linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.42))",
       display: "flex",
       alignItems: "flex-start",
+      justifyContent: "center"
     },
     card: {
       width: "100%",
