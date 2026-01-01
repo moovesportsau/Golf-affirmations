@@ -23,10 +23,11 @@ export default function CategoryPage() {
   /* ---------------- Mobile-tuned styles ---------------- */
   const styles = {
     page: {
-      minHeight: "100vh",
+      minHeight: "100dvh",
       backgroundImage: 'url("/golf-bg.jpg")',
       backgroundSize: "cover",
       backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
       fontFamily:
         '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     },
