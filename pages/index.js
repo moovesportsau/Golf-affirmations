@@ -275,6 +275,12 @@ export default function Home() {
           <button onClick={() => alert("Premium unlock is coming soon!")} style={styles.btnPrimary}>
             🔓 Unlock Full Access (Coming Soon)
           </button>
+          <button
+            onClick={() => router.push("/favorites")}
+            style={{ ...styles.btnSoft, width: "100%", marginTop: 10 }}
+          >
+            ❤️ Favorites
+          </button>
 
           <div style={{ height: 14 }} />
 
