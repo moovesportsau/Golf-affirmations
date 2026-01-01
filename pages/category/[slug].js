@@ -20,31 +20,33 @@ export default function CategoryPage() {
     Recovery: "Recovery",
   };
 
+  /* ---------------- Mobile-tuned styles ---------------- */
   const styles = {
     page: {
       minHeight: "100vh",
       backgroundImage: 'url("/golf-bg.jpg")',
       backgroundSize: "cover",
       backgroundPosition: "center",
-      backgroundAttachment: "fixed",
       fontFamily:
         '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     },
     overlay: {
       minHeight: "100vh",
-      padding: "max(16px, env(safe-area-inset-top)) 14px max(16px, env(safe-area-inset-bottom))",
+      paddingTop: "max(12px, env(safe-area-inset-top))",
+      paddingBottom: "max(12px, env(safe-area-inset-bottom))",
+      paddingLeft: "12px",
+      paddingRight: "12px",
       background: "linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.42))",
       display: "flex",
       justifyContent: "center",
     },
     card: {
       width: "100%",
-      maxWidth: 560,
-      borderRadius: 18,
-      padding: 16,
+      maxWidth: 520,
+      borderRadius: 16,
+      padding: 14,
       background: "rgba(255,255,255,0.12)",
       border: "1px solid rgba(255,255,255,0.18)",
-      boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
       backdropFilter: "blur(10px)",
       WebkitBackdropFilter: "blur(10px)",
       color: "white",
@@ -53,22 +55,31 @@ export default function CategoryPage() {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      marginBottom: 10,
+      marginBottom: 8,
     },
     backBtn: {
-      padding: "10px 14px",
-      borderRadius: 12,
+      padding: "8px 12px",
+      borderRadius: 10,
       border: "1px solid rgba(255,255,255,0.25)",
       background: "rgba(255,255,255,0.12)",
       color: "white",
-      fontWeight: 800,
+      fontWeight: 700,
+      fontSize: 13,
       cursor: "pointer",
     },
-    title: { fontSize: 20, marginBottom: 6 },
-    sub: { fontSize: 13, color: "rgba(255,255,255,0.9)" },
+    title: {
+      fontSize: 18,
+      margin: "4px 0 4px",
+      lineHeight: 1.25,
+    },
+    sub: {
+      fontSize: 12,
+      color: "rgba(255,255,255,0.85)",
+      marginBottom: 8,
+    },
     tile: {
-      marginTop: 14,
-      padding: 16,
+      marginTop: 10,
+      padding: 14,
       borderRadius: 14,
       background: "rgba(0,0,0,0.28)",
       border: "1px solid rgba(255,255,255,0.2)",
@@ -76,33 +87,44 @@ export default function CategoryPage() {
       touchAction: "pan-y",
     },
     quoteWrap: {
-      transition: "transform 180ms ease, opacity 180ms ease",
+      transition: "transform 160ms ease, opacity 160ms ease",
       willChange: "transform, opacity",
     },
-    quote: { fontSize: 16, lineHeight: 1.6 },
-    row: { display: "flex", gap: 10, flexWrap: "wrap", marginTop: 14 },
+    quote: {
+      fontSize: 15,
+      lineHeight: 1.55,
+      margin: 0,
+    },
+    row: {
+      display: "flex",
+      gap: 8,
+      flexWrap: "wrap",
+      marginTop: 12,
+    },
     primaryBtn: {
-      padding: "12px",
-      borderRadius: 12,
+      padding: "10px",
+      borderRadius: 10,
       border: "none",
       background: "white",
       color: "#111",
-      fontWeight: 900,
-      flex: "1 1 140px",
+      fontWeight: 800,
+      fontSize: 14,
+      flex: "1 1 130px",
       cursor: "pointer",
     },
     softBtn: {
-      padding: "12px",
-      borderRadius: 12,
+      padding: "10px",
+      borderRadius: 10,
       border: "1px solid rgba(255,255,255,0.25)",
       background: "rgba(255,255,255,0.12)",
       color: "white",
-      fontWeight: 800,
-      flex: "1 1 120px",
+      fontWeight: 700,
+      fontSize: 13,
+      flex: "1 1 110px",
       cursor: "pointer",
     },
     toast: {
-      marginTop: 10,
+      marginTop: 8,
       fontSize: 12,
       color: "#b8ffcf",
     },
@@ -128,7 +150,14 @@ export default function CategoryPage() {
             </button>
             <h1 style={styles.title}>Coach Notes</h1>
             <textarea
-              style={{ width: "100%", minHeight: 240, marginTop: 12 }}
+              style={{
+                width: "100%",
+                minHeight: 220,
+                marginTop: 10,
+                padding: 10,
+                borderRadius: 10,
+                fontSize: 14,
+              }}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
             />
@@ -183,29 +212,27 @@ export default function CategoryPage() {
     if (animating.current) return;
     animating.current = true;
 
-    setOffsetX(dir === "next" ? -18 : 18);
+    setOffsetX(dir === "next" ? -14 : 14);
     setOpacity(0);
 
     setTimeout(() => {
       setIndex(nextIndex);
-      setOffsetX(dir === "next" ? 18 : -18);
+      setOffsetX(dir === "next" ? 14 : -14);
       setOpacity(0);
 
       setTimeout(() => {
         setOffsetX(0);
         setOpacity(1);
         animating.current = false;
-      }, 180);
-    }, 140);
+      }, 160);
+    }, 120);
   };
 
   const next = () => animate((index + 1) % list.length, "next");
   const prev = () => animate((index - 1 + list.length) % list.length, "prev");
 
-  /* ---------------- SHARE ---------------- */
   const shareAffirmation = async () => {
     const text = `“${list[index]}” — ${title}\n\nThe Mental Caddie`;
-
     try {
       if (navigator.share) {
         await navigator.share({ text });
@@ -217,8 +244,7 @@ export default function CategoryPage() {
       await navigator.clipboard.writeText(text);
       setToast("Copied to clipboard");
     }
-
-    setTimeout(() => setToast(""), 2000);
+    setTimeout(() => setToast(""), 1800);
   };
 
   return (
