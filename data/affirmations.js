@@ -10,6 +10,16 @@ export const affirmations = {
     "I am prepared for every challenge.",
     "I am in control of my emotions and my game.",
     "I trust my instincts on course."
+    “I trust my game completely.”
+    “I belong on this course.”
+    “I believe in my preparation.”
+    “I commit with confidence to every shot.”
+    “I play freely and without doubt.”
+    “My confidence grows with every swing.”
+    “I trust my decisions and execution.”
+    “I step into each shot with belief.”
+    “I back myself under pressure.”
+    “I play with quiet, steady confidence.”
   ],
 
   TournamentMindset: [
@@ -23,6 +33,16 @@ export const affirmations = {
     "I trust my mental preparation.",
     "I am in the zone, one shot at a time.",
     "I am patient with myself and my game."
+    “I compete with calm and confidence.”
+    “Pressure brings out my best golf.”
+    “I stay composed in competitive moments.”
+    “I trust my preparation in competition.”
+    “I embrace the challenge of tournament play.”
+    “I stay patient and disciplined under pressure.”
+    “I commit fully, regardless of outcome.”
+    “I play one shot at a time.”
+    “I finish strong and focused.”
+    “I thrive in competitive environments.”
   ],
 
   Focus: [
@@ -36,6 +56,16 @@ export const affirmations = {
     "I am fully present with this shot and this moment.",
     "My attention is calm, clear, and locked in.",
     "Nothing matters except my target and my routine."
+    “I am fully present with shot.”
+    “My attention stays calm and clear.”
+    “I lock into my routine and target.”
+    “I stay focused from start to finish.”
+    “Distractions fade as I focus on my process.”
+    “I narrow my focus to what matters.”
+    “My mind stays disciplined and sharp.”
+    “I give each shot my full attention.”
+    “I reset my focus between every shot.”
+    “My focus is consistent and controlled.”
   ],
 
   Recovery: [
@@ -49,6 +79,16 @@ export const affirmations = {
     "I stay emotionally neutral between shots.",
     "My focus refreshes shot by shot.",
     "I respond, not react."
+    “I leave the last shot behind me completely.”
+    “I reset my mind before every routine.”
+    “Calm returns to me quickly and naturally.”
+    “I detach emotion from outcome.”
+    “I move on with confidence and clarity.”
+    “Each breath brings me back to neutral.”
+    “I recover faster than ever before.”
+    “I stay patient with myself.”
+    “I control my response, always.”
+    “I am grounded between shots.”
   ],
 
   PreRound: [
@@ -62,6 +102,16 @@ export const affirmations = {
     "I commit to my routine on every shot.",
     "Today is an opportunity, not a test.",
     "I am excited to compete."
+    “I step onto the course prepared and confident.”
+    “My mind is clear and focused.”
+    “I am relaxed and ready to compete.”
+    “I trust my game today.”
+    “I commit to my plan before the first shot.”
+    “I play with confidence from the opening tee.”
+    “I am energized and composed.”
+    “I welcome today’s challenge.”
+    “I start strong and stay steady.”
+    “I enjoy the opportunity to play.”
   ],
 
   CourseManagement: [
@@ -75,6 +125,16 @@ export const affirmations = {
     "I focus on the best miss, not the perfect shot.",
     "I manage my game with intelligence and calm.",
     "Smart golf leads to low scores."
+    “I play percentages with confidence.”
+    “I choose the smartest shot every time.”
+    “I commit to conservative decisions fully.”
+    “I manage risk wisely.”
+    “I stay patient and disciplined.”
+    “I aim for high-quality misses.”
+    “I stay one step ahead of the course.”
+    “I trust my strategy, not impulse.”
+    “I think clearly before I swing.”
+    “Smart choices create scoring opportunities.”
   ],
 
   Technique: [
@@ -88,6 +148,16 @@ export const affirmations = {
     "I stay relaxed and balanced through impact.",
     "I let go of mechanics and trust my motion.",
     "I strike the ball cleanly and confidently."
+    “I commit fully and swing with confidence.”
+    “My setup is solid and repeatable.”
+    “I trust feel over thought.”
+    “My rhythm stays consistent all round.”
+    “I swing freely without tension.”
+    “My mechanics work naturally under pressure.”
+    “I let the club do the work.”
+    “I stay balanced and smooth.”
+    “My swing flows effortlessly.”
+    “I trust my preparation and execution.”
   ],
 
   Growth: [
@@ -101,6 +171,16 @@ export const affirmations = {
     "Mistakes are feedback, not failures.",
     "I am committed to long-term improvement.",
     "My ceiling rises every time I show up to learn."
+    “I embrace steady improvement over instant results.”
+    “My effort today builds tomorrow’s success.”
+    “I am curious, not critical, about my performance.”
+    “Each practice session sharpens my edge.”
+    “I grow strongest where I am challenged most.”
+    “Learning excites and motivates me.”
+    “My game improves with intention and consistency.”
+    “I commit to getting better every day.”
+    “I measure success by progress, not score alone.”
+    “I trust my long-term development.”
   ],
 
   Resilience: [
@@ -114,5 +194,16 @@ export const affirmations = {
     "I stay composed when it matters most.",
     "I finish rounds as strong as I start them.",
     "I am mentally tougher than yesterday."
+    “I remain composed when the round gets tough.”
+    “I trust myself in pressure moments.”
+    “I respond with strength and discipline.”
+    “Adversity sharpens my competitive edge.”
+    “I stay confident regardless of score.”
+    “I handle momentum shifts with control.”
+    “I stay mentally strong through the entire round.”
+    “I welcome pressure as part of competition.”
+    “My mindset never wavers.”
+    ‘I finish every hole with belief.”
   ]
 };
+
