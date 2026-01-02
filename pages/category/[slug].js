@@ -354,7 +354,8 @@ export default function CategoryPage() {
             </div>
 
             <h1 style={styles.title}>{title}</h1>
-            <p style={styles.sub}>🔒 This category is locked.</p>
+            <p style={styles.sub}>🔒 This category is locked get,
+               Unlock for Full Access.</p>
           </main>
         </div>
       </div>
