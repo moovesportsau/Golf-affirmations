@@ -121,6 +121,8 @@ export default function CategoryPage() {
       margin: 0,
       fontWeight: 800,
       textAlign: "left",
+      wordBreak: "break-word",
+      overflowWrap: "anywhere",
     },
     row: {
       display: "flex",
@@ -152,6 +154,12 @@ export default function CategoryPage() {
       cursor: "pointer",
       textAlign: "center",
     },
+    toast: {
+      marginTop: 10,
+      fontSize: 13,
+      color: "#b8ffcf",
+      fontWeight: 700,
+    },
     textarea: {
       width: "100%",
       boxSizing: "border-box",
@@ -167,29 +175,18 @@ export default function CategoryPage() {
       resize: "vertical",
       outline: "none",
     },
-    toast: {
-      marginTop: 10,
-      fontSize: 13,
-      color: "#b8ffcf",
-      fontWeight: 700,
-    },
   };
 
   if (!slug) return null;
 
   // --- Normalize incoming slug -> data key ---
-  // Handles things like "coachNotes", "coach-notes", "Coach Notes", etc.
   const keyFromSlug = (raw) => {
     const s = String(raw || "").trim();
     if (!s) return "";
-    if (s.toLowerCase() === "coachnotes" || s.toLowerCase() === "coach-notes")
-      return "coachNotes";
+    const lower = s.toLowerCase();
+    if (lower === "coachnotes" || lower === "coach-notes") return "coachNotes";
 
-    // Common route shapes:
-    // "Confidence" already works, "confidence" should map to "Confidence"
-    // "tournamentmindset" -> "TournamentMindset", "tournament-mindset" -> "TournamentMindset"
     const cleaned = s.replace(/[-_\s]/g, "").toLowerCase();
-
     const map = {
       confidence: "Confidence",
       focus: "Focus",
@@ -201,17 +198,74 @@ export default function CategoryPage() {
       resilience: "Resilience",
       recovery: "Recovery",
     };
-
     return map[cleaned] || s;
   };
 
   const key = keyFromSlug(slug);
   const title = TITLES[key] || String(slug);
 
-  // --- Coach Notes: simple free text only (NO section/title fields) ---
+  // ---- Favorites storage (supports old keys too) ----
+  const FAVORITES_KEYS = ["tmc:favorites", "tmf_favorites", "tmc_favorites"];
+
+  const readFavorites = () => {
+    for (const k of FAVORITES_KEYS) {
+      try {
+        const raw = localStorage.getItem(k);
+        if (!raw) continue;
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) return { key: k, arr };
+      } catch {}
+    }
+    return { key: FAVORITES_KEYS[0], arr: [] };
+  };
+
+  const writeFavorites = (arr) => {
+    // Write to primary key, and also mirror to the other keys for compatibility
+    for (const k of FAVORITES_KEYS) {
+      try {
+        localStorage.setItem(k, JSON.stringify(arr));
+      } catch {}
+    }
+  };
+
+  const [toast, setToast] = useState("");
+
+  const setToastMsg = (msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(""), 1200);
+  };
+
+  const getShareUrl = () => {
+    try {
+      const origin = window.location.origin;
+      const path = router.asPath.split("?")[0];
+      return `${origin}${path}`;
+    } catch {
+      return "";
+    }
+  };
+
+  const shareWithLink = async (text) => {
+    const url = getShareUrl();
+    const payloadText = url ? `${text}\n\n${url}` : text;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "The Mental Caddie",
+          text: payloadText,
+          url: url || undefined,
+        });
+      } else {
+        await navigator.clipboard.writeText(payloadText);
+        setToastMsg("Copied");
+      }
+    } catch {}
+  };
+
+  // --- Coach Notes: keep as simple free text + share ---
   if (key === "coachNotes") {
     const [notes, setNotes] = useState("");
-    const [toast, setToast] = useState("");
 
     useEffect(() => {
       try {
@@ -223,11 +277,9 @@ export default function CategoryPage() {
     const save = () => {
       try {
         localStorage.setItem("coachNotes:text", notes);
-        setToast("Saved ✓");
-        setTimeout(() => setToast(""), 1400);
+        setToastMsg("Saved ✓");
       } catch {
-        setToast("Could not save");
-        setTimeout(() => setToast(""), 1400);
+        setToastMsg("Could not save");
       }
     };
 
@@ -243,9 +295,7 @@ export default function CategoryPage() {
             </div>
 
             <h1 style={styles.title}>Coach Notes</h1>
-            <p style={styles.sub}>
-              Write anything you want to remember. It saves on this device.
-            </p>
+            <p style={styles.sub}>Write anything you want to remember.</p>
 
             <div style={styles.tile}>
               <textarea
@@ -262,13 +312,18 @@ export default function CategoryPage() {
               </button>
               <button
                 style={styles.softBtn}
+                onClick={() => shareWithLink(notes || "My Coach Notes")}
+              >
+                Share
+              </button>
+              <button
+                style={styles.softBtn}
                 onClick={() => {
                   setNotes("");
                   try {
                     localStorage.removeItem("coachNotes:text");
                   } catch {}
-                  setToast("Cleared ✓");
-                  setTimeout(() => setToast(""), 1400);
+                  setToastMsg("Cleared ✓");
                 }}
               >
                 Clear
@@ -315,6 +370,8 @@ export default function CategoryPage() {
     setIndex(0);
   }, [key]);
 
+  const safeLen = list.length || 1;
+
   const animate = (nextIndex, dir) => {
     if (animating.current) return;
     animating.current = true;
@@ -335,11 +392,37 @@ export default function CategoryPage() {
     }, 120);
   };
 
-  const safeLen = list.length || 1;
   const next = () => animate((index + 1) % safeLen, "next");
   const prev = () => animate((index - 1 + safeLen) % safeLen, "prev");
 
   const current = list[index] || "No affirmations found.";
+
+  const isFavorited = () => {
+    try {
+      const { arr } = readFavorites();
+      return arr.some((x) => x?.slug === key && x?.text === current);
+    } catch {
+      return false;
+    }
+  };
+
+  const toggleFavorite = () => {
+    try {
+      const { arr } = readFavorites();
+      const exists = arr.some((x) => x?.slug === key && x?.text === current);
+
+      const nextArr = exists
+        ? arr.filter((x) => !(x?.slug === key && x?.text === current))
+        : [{ slug: key, title, text: current }, ...arr];
+
+      writeFavorites(nextArr);
+      setToastMsg(exists ? "Removed from Favorites" : "Saved to Favorites");
+    } catch {
+      setToastMsg("Could not update favorites");
+    }
+  };
+
+  const fav = isFavorited();
 
   return (
     <div style={styles.page}>
@@ -368,6 +451,7 @@ export default function CategoryPage() {
             </div>
           </div>
 
+          {/* Prev/Next */}
           <div style={styles.row}>
             <button style={styles.softBtn} onClick={prev}>
               ← Prev
@@ -376,6 +460,29 @@ export default function CategoryPage() {
               Next →
             </button>
           </div>
+
+          {/* Share + Favorites */}
+          <div style={styles.row}>
+            <button
+              style={styles.softBtn}
+              onClick={() => shareWithLink(current)}
+            >
+              Share
+            </button>
+
+            <button style={styles.softBtn} onClick={toggleFavorite}>
+              {fav ? "♥ Favorited" : "♡ Favorite"}
+            </button>
+
+            <button
+              style={styles.softBtn}
+              onClick={() => router.push("/favorites")}
+            >
+              Favorites
+            </button>
+          </div>
+
+          {toast ? <div style={styles.toast}>{toast}</div> : null}
         </main>
       </div>
     </div>
