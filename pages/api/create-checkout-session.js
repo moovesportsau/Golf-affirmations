@@ -22,7 +22,7 @@ export default async function handler(req, res) {
               name: "The Mental Caddie – Full Access",
               description: "One-time unlock of all categories",
             },
-            unit_amount: 249, // $2.49 AUD
+            unit_amount: 349, // $3.49 AUD
           },
           quantity: 1,
         },
