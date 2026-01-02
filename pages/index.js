@@ -234,8 +234,9 @@ export default function HomePage() {
         <main style={styles.card}>
           <h1 style={styles.h1}>The Mental Caddie</h1>
           <p style={styles.p}>
-            Elevate your mental game with affirmations designed for junior and
-            competitive golfers.
+            Elevate your mental game with positive affirmations designed 
+            specially designed for golfers. Build confidence, improve focus,
+            and unlock your true potential on the course.
           </p>
 
           {!paid ? (
