@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { affirmations } from "../../data/affirmations";
 
@@ -6,6 +6,7 @@ export default function CategoryPage() {
   const router = useRouter();
   const { slug } = router.query;
 
+  // Free categories (locked ones show a lock screen)
   const FREE_KEYS = new Set(["Confidence", "Focus", "coachNotes"]);
 
   const TITLES = {
@@ -18,12 +19,13 @@ export default function CategoryPage() {
     CourseManagement: "Course Management",
     Resilience: "Resilience",
     Recovery: "Recovery",
+    coachNotes: "Coach Notes",
   };
 
   /* ---------------- Mobile-tuned styles ---------------- */
   const styles = {
     page: {
-      minHeight: "var(--app-height)",
+      minHeight: "var(--app-height, 100vh)",
       backgroundImage: 'url("/golf-bg.jpg")',
       backgroundSize: "cover",
       backgroundPosition: "center",
@@ -32,20 +34,22 @@ export default function CategoryPage() {
         '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
     },
     overlay: {
-      minHeight: "var(--app-height)",
+      minHeight: "var(--app-height, 100vh)",
       paddingTop: "max(12px, env(safe-area-inset-top))",
       paddingBottom: "max(24px, env(safe-area-inset-bottom))",
-      paddingLeft: "12px",
-      paddingRight: "12px",
-      background: "linear-gradient(rgba(0,0,0,0.62), rgba(0,0,0,0.42))",
+      paddingLeft: 12,
+      paddingRight: 12,
+      background: "linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35))",
       display: "flex",
       alignItems: "flex-start",
-      justifyContent: "center"
+      justifyContent: "center",
     },
     card: {
       width: "100%",
       maxWidth: 520,
-      borderRadius: 16,
+      boxSizing: "border-box",
+      margin: "0 auto",
+      borderRadius: 18,
       padding: 14,
       background: "rgba(255,255,255,0.12)",
       border: "1px solid rgba(255,255,255,0.18)",
@@ -57,32 +61,51 @@ export default function CategoryPage() {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      marginBottom: 8,
+      gap: 10,
+      marginBottom: 10,
     },
     backBtn: {
-      padding: "8px 12px",
-      borderRadius: 10,
+      padding: "10px 14px",
+      borderRadius: 999,
       border: "1px solid rgba(255,255,255,0.25)",
       background: "rgba(255,255,255,0.12)",
       color: "white",
-      fontWeight: 700,
-      fontSize: 13,
+      fontWeight: 800,
+      fontSize: 14,
       cursor: "pointer",
+      minWidth: 110,
+      textAlign: "center",
+    },
+    pill: {
+      padding: "10px 14px",
+      borderRadius: 999,
+      border: "1px solid rgba(255,255,255,0.20)",
+      background: "rgba(255,255,255,0.10)",
+      color: "white",
+      fontWeight: 800,
+      fontSize: 14,
+      minWidth: 80,
+      textAlign: "center",
+      opacity: 0.95,
     },
     title: {
-      fontSize: 18,
-      margin: "4px 0 4px",
-      lineHeight: 1.25,
+      fontSize: 34,
+      margin: "6px 0 6px",
+      lineHeight: 1.05,
+      fontWeight: 900,
+      letterSpacing: -0.5,
+      textAlign: "left",
     },
     sub: {
-      fontSize: 12,
+      fontSize: 13,
       color: "rgba(255,255,255,0.85)",
-      marginBottom: 8,
+      marginBottom: 10,
+      textAlign: "left",
     },
     tile: {
-      marginTop: 10,
-      padding: 14,
-      borderRadius: 14,
+      marginTop: 14,
+      padding: 18,
+      borderRadius: 18,
       background: "rgba(0,0,0,0.28)",
       border: "1px solid rgba(255,255,255,0.2)",
       userSelect: "none",
@@ -93,105 +116,188 @@ export default function CategoryPage() {
       willChange: "transform, opacity",
     },
     quote: {
-      fontSize: 15,
-      lineHeight: 1.55,
+      fontSize: 26,
+      lineHeight: 1.25,
       margin: 0,
+      fontWeight: 800,
+      textAlign: "left",
     },
     row: {
       display: "flex",
-      gap: 8,
+      gap: 12,
       flexWrap: "wrap",
-      marginTop: 12,
+      marginTop: 16,
     },
     primaryBtn: {
-      padding: "10px",
-      borderRadius: 10,
+      padding: "14px 14px",
+      borderRadius: 14,
       border: "none",
       background: "white",
       color: "#111",
-      fontWeight: 800,
-      fontSize: 14,
-      flex: "1 1 130px",
+      fontWeight: 900,
+      fontSize: 18,
+      flex: "1 1 160px",
       cursor: "pointer",
+      textAlign: "center",
     },
     softBtn: {
-      padding: "10px",
-      borderRadius: 10,
+      padding: "14px 14px",
+      borderRadius: 14,
       border: "1px solid rgba(255,255,255,0.25)",
       background: "rgba(255,255,255,0.12)",
       color: "white",
-      fontWeight: 700,
-      fontSize: 13,
-      flex: "1 1 110px",
+      fontWeight: 900,
+      fontSize: 18,
+      flex: "1 1 160px",
       cursor: "pointer",
+      textAlign: "center",
+    },
+    textarea: {
+      width: "100%",
+      boxSizing: "border-box",
+      minHeight: 240,
+      marginTop: 10,
+      padding: 14,
+      borderRadius: 14,
+      border: "1px solid rgba(255,255,255,0.22)",
+      background: "rgba(0,0,0,0.18)",
+      color: "white",
+      fontSize: 16,
+      lineHeight: 1.5,
+      resize: "vertical",
+      outline: "none",
     },
     toast: {
-      marginTop: 8,
-      fontSize: 12,
+      marginTop: 10,
+      fontSize: 13,
       color: "#b8ffcf",
+      fontWeight: 700,
     },
   };
 
   if (!slug) return null;
 
-  /* ---------------- Coach Notes ---------------- */
-  if (slug === "coachNotes") {
+  // --- Normalize incoming slug -> data key ---
+  // Handles things like "coachNotes", "coach-notes", "Coach Notes", etc.
+  const keyFromSlug = (raw) => {
+    const s = String(raw || "").trim();
+    if (!s) return "";
+    if (s.toLowerCase() === "coachnotes" || s.toLowerCase() === "coach-notes")
+      return "coachNotes";
+
+    // Common route shapes:
+    // "Confidence" already works, "confidence" should map to "Confidence"
+    // "tournamentmindset" -> "TournamentMindset", "tournament-mindset" -> "TournamentMindset"
+    const cleaned = s.replace(/[-_\s]/g, "").toLowerCase();
+
+    const map = {
+      confidence: "Confidence",
+      focus: "Focus",
+      technique: "Technique",
+      growth: "Growth",
+      preround: "PreRound",
+      tournamentmindset: "TournamentMindset",
+      coursemanagement: "CourseManagement",
+      resilience: "Resilience",
+      recovery: "Recovery",
+    };
+
+    return map[cleaned] || s;
+  };
+
+  const key = keyFromSlug(slug);
+  const title = TITLES[key] || String(slug);
+
+  // --- Coach Notes: simple free text only (NO section/title fields) ---
+  if (key === "coachNotes") {
     const [notes, setNotes] = useState("");
+    const [toast, setToast] = useState("");
 
     useEffect(() => {
-      const saved = localStorage.getItem("coachNotes");
-      if (saved) setNotes(saved);
+      try {
+        const saved = localStorage.getItem("coachNotes:text");
+        if (saved) setNotes(saved);
+      } catch {}
     }, []);
+
+    const save = () => {
+      try {
+        localStorage.setItem("coachNotes:text", notes);
+        setToast("Saved ✓");
+        setTimeout(() => setToast(""), 1400);
+      } catch {
+        setToast("Could not save");
+        setTimeout(() => setToast(""), 1400);
+      }
+    };
 
     return (
       <div style={styles.page}>
         <div style={styles.overlay}>
           <main style={styles.card}>
-            <button style={styles.backBtn} onClick={() => router.push("/")}>
-              ← Back
-            </button>
+            <div style={styles.topRow}>
+              <button style={styles.backBtn} onClick={() => router.push("/")}>
+                ← Home
+              </button>
+              <div style={styles.pill}>Notes</div>
+            </div>
+
             <h1 style={styles.title}>Coach Notes</h1>
-            <textarea
-              style={{
-                width: "100%",
-                minHeight: 220,
-                marginTop: 10,
-                padding: 10,
-                borderRadius: 10,
-                fontSize: 14,
-              }}
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-            />
+            <p style={styles.sub}>
+              Write anything you want to remember. It saves on this device.
+            </p>
+
+            <div style={styles.tile}>
+              <textarea
+                style={styles.textarea}
+                placeholder="Write your coach notes here…"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+              />
+            </div>
+
             <div style={styles.row}>
-              <button
-                style={styles.primaryBtn}
-                onClick={() => {
-                  localStorage.setItem("coachNotes", notes);
-                  alert("Saved");
-                }}
-              >
+              <button style={styles.primaryBtn} onClick={save}>
                 Save
               </button>
+              <button
+                style={styles.softBtn}
+                onClick={() => {
+                  setNotes("");
+                  try {
+                    localStorage.removeItem("coachNotes:text");
+                  } catch {}
+                  setToast("Cleared ✓");
+                  setTimeout(() => setToast(""), 1400);
+                }}
+              >
+                Clear
+              </button>
             </div>
+
+            {toast ? <div style={styles.toast}>{toast}</div> : null}
           </main>
         </div>
       </div>
     );
   }
 
-  /* ---------------- Categories ---------------- */
-  const list = affirmations?.[slug];
-  const title = TITLES[slug] || slug;
+  // --- Regular categories ---
+  const list = affirmations?.[key] || [];
+  const isFree = FREE_KEYS.has(key);
 
-  if (!FREE_KEYS.has(slug)) {
+  if (!isFree) {
     return (
       <div style={styles.page}>
         <div style={styles.overlay}>
           <main style={styles.card}>
-            <button style={styles.backBtn} onClick={() => router.push("/")}>
-              ← Back
-            </button>
+            <div style={styles.topRow}>
+              <button style={styles.backBtn} onClick={() => router.push("/")}>
+                ← Home
+              </button>
+              <div style={styles.pill}>Locked</div>
+            </div>
+
             <h1 style={styles.title}>{title}</h1>
             <p style={styles.sub}>🔒 This category is locked.</p>
           </main>
@@ -203,12 +309,11 @@ export default function CategoryPage() {
   const [index, setIndex] = useState(0);
   const [offsetX, setOffsetX] = useState(0);
   const [opacity, setOpacity] = useState(1);
-  const [toast, setToast] = useState("");
   const animating = useRef(false);
 
   useEffect(() => {
     setIndex(0);
-  }, [slug]);
+  }, [key]);
 
   const animate = (nextIndex, dir) => {
     if (animating.current) return;
@@ -230,73 +335,11 @@ export default function CategoryPage() {
     }, 120);
   };
 
-  const next = () => animate((index + 1) % list.length, "next");
-  const prev = () => animate((index - 1 + list.length) % list.length, "prev");
+  const safeLen = list.length || 1;
+  const next = () => animate((index + 1) % safeLen, "next");
+  const prev = () => animate((index - 1 + safeLen) % safeLen, "prev");
 
- /* ---------------- FAVORITES ---------------- */
-  const FAVORITES_KEY = "tmc:favorites";
-
-  const getFavorites = () => {
-    try {
-      const raw = localStorage.getItem(FAVORITES_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
-  };
-
-  const [isFav, setIsFav] = useState(false);
-
-  useEffect(() => {
-    // Update heart when the quote changes
-    try {
-      const favs = getFavorites();
-      const currentText = list?.[index];
-      setIsFav(favs.some((f) => f?.text === currentText));
-    } catch {
-      setIsFav(false);
-    }
-  }, [index, slug]); // slug changes when you change category
-
-  const toggleFavorite = () => {
-    const currentText = list[index];
-    const category = title;
-
-    const favs = getFavorites();
-    const exists = favs.some((f) => f?.text === currentText);
-
-    let nextFavs;
-    if (exists) {
-      nextFavs = favs.filter((f) => f?.text !== currentText);
-      setIsFav(false);
-      setToast("Removed from Favorites");
-    } else {
-      nextFavs = [
-        { text: currentText, category, addedAt: Date.now() },
-        ...favs,
-      ];
-      setIsFav(true);
-      setToast("Saved to Favorites");
-    }
-
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(nextFavs));
-    setTimeout(() => setToast(""), 1800);
-  };
-  const shareAffirmation = async () => {
-    const text = `“${list[index]}” — ${title}\n\nThe Mental Caddie`;
-    try {
-      if (navigator.share) {
-        await navigator.share({ text });
-      } else {
-        await navigator.clipboard.writeText(text);
-        setToast("Copied to clipboard");
-      }
-    } catch {
-      await navigator.clipboard.writeText(text);
-      setToast("Copied to clipboard");
-    }
-    setTimeout(() => setToast(""), 1800);
-  };
+  const current = list[index] || "No affirmations found.";
 
   return (
     <div style={styles.page}>
@@ -304,10 +347,10 @@ export default function CategoryPage() {
         <main style={styles.card}>
           <div style={styles.topRow}>
             <button style={styles.backBtn} onClick={() => router.push("/")}>
-              ← Back
+              ← Home
             </button>
-            <div style={{ fontSize: 12 }}>
-              {index + 1}/{list.length}
+            <div style={styles.pill}>
+              {list.length ? `${index + 1}/${list.length}` : "0/0"}
             </div>
           </div>
 
@@ -321,7 +364,7 @@ export default function CategoryPage() {
                 opacity,
               }}
             >
-              <p style={styles.quote}>“{list[index]}”</p>
+              <p style={styles.quote}>{current}</p>
             </div>
           </div>
 
@@ -332,15 +375,7 @@ export default function CategoryPage() {
             <button style={styles.primaryBtn} onClick={next}>
               Next →
             </button>
-            <button style={styles.softBtn} onClick={shareAffirmation}>
-              📤 Share
-            </button>
-            <button style={styles.softBtn} onClick={toggleFavorite}>
-              {isFav ? "❤️ Saved" : "🤍 Favorite"}
-            </button>
           </div>
-
-          {toast && <div style={styles.toast}>{toast}</div>}
         </main>
       </div>
     </div>
