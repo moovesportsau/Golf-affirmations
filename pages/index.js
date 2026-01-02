@@ -1,4 +1,3 @@
-cat > pages/index.js <<'EOF'
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 
