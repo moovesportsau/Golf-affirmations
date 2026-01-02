@@ -307,4 +307,3 @@ export default function HomePage() {
     </div>
   );
 }
-EOF
