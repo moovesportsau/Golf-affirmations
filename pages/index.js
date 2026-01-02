@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
+import { affirmations } from "../data/affirmations";
 
 const ORDER = [
   "Confidence",
@@ -43,11 +44,47 @@ const DESCS = {
 const FREE_KEYS = new Set(["Confidence", "Focus", "coachNotes"]);
 const PAID_KEY = "tmc:paid_v1";
 
+/* ================= DAILY AFFIRMATION HELPERS ================= */
+function getBrisbaneDayKey(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Australia/Brisbane",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+
+  const y = parts.find((p) => p.type === "year")?.value;
+  const m = parts.find((p) => p.type === "month")?.value;
+  const d = parts.find((p) => p.type === "day")?.value;
+
+  return `${y}-${m}-${d}`; // YYYY-MM-DD
+}
+
+function hashStringToInt(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function pickDailyFromList(list, key) {
+  if (!Array.isArray(list) || list.length === 0) return "";
+  const idx = hashStringToInt(key) % list.length;
+  return list[idx];
+}
+/* ============================================================= */
+
 export default function HomePage() {
   const router = useRouter();
   const [paid, setPaid] = useState(false);
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState("");
+
+  // Daily affirmation (stable for the day in Brisbane time)
+  const [dailyAffirmation, setDailyAffirmation] = useState("");
+  const dayKey = useMemo(() => getBrisbaneDayKey(new Date()), []);
 
   // If user returns from Stripe success, mark paid
   useEffect(() => {
@@ -73,6 +110,27 @@ export default function HomePage() {
       setPaid(false);
     }
   }, []);
+
+   // Pick today's affirmation (from all categories combined)
+  useEffect(() => {
+    const all = Object.values(affirmations).flat().filter(Boolean);
+
+    const storageKey = `dailyAffirmation:${dayKey}`;
+    try {
+      const cached = localStorage.getItem(storageKey);
+      if (cached) {
+        setDailyAffirmation(cached);
+        return;
+      }
+    } catch {}
+
+    const picked = pickDailyFromList(all, dayKey);
+    setDailyAffirmation(picked);
+
+    try {
+      localStorage.setItem(storageKey, picked);
+    } catch {}
+  }, [dayKey]);
 
   const lockedCount = useMemo(() => {
     let n = 0;
@@ -238,6 +296,25 @@ export default function HomePage() {
             specially designed for golfers. Build confidence, improve focus,
             and unlock your true potential on the course.
           </p>
+
+          {/* Daily Affirmation (shows before unlock button) */}
+          <div
+            style={{
+              marginTop: 10,
+              marginBottom: 14,
+              padding: 14,
+              borderRadius: 16,
+              background: "rgba(0,0,0,0.28)",
+              border: "1px solid rgba(255,255,255,0.2)",
+            }}
+          >
+            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 8 }}>
+              Daily Affirmation
+            </div>
+            <div style={{ fontSize: 18, lineHeight: 1.35 }}>
+              {dailyAffirmation || "Loading..."}
+            </div>
+          </div>
 
           {!paid ? (
             <div style={styles.unlockRow}>
