@@ -439,7 +439,7 @@ export default function CategoryPage() {
 
   // --- Regular categories ---
   const list = affirmations?.[key] || [];
-  const isFree = FREE_KEYS.has(key) || PAID;
+  const isFree = FREE_KEYS.has(key) || paid;
 
   if (!isFree) {
     return (
