@@ -147,7 +147,6 @@ export default function HomePage() {
       try {
         localStorage.setItem(PAID_KEY, "1");
       } catch {}
-      setPaid(true);
       setToast("Unlocked ✓");
       setTimeout(() => setToast(""), 1400);
       // clean the URL
