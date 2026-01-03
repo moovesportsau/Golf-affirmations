@@ -573,8 +573,6 @@ export default function HomePage() {
                 setTimeout(() => setToast(""), 1400);
                }}
               >
-               Lock again
-              </button>
 
             </div>
           )}
