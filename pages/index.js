@@ -333,7 +333,7 @@ export default function HomePage() {
               </button>
               <div style={{ flex: "1 1 100%" }} />
               <p style={{ ...styles.p, margin: "0" }}>
-                {lockedCount} categories are locked until unlocked.
+                {lockedCount} categories unlocked with full access paid.
               </p>
             </div>
           ) : (
