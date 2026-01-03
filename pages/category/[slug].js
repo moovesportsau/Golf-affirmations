@@ -6,7 +6,7 @@ export default function CategoryPage() {
   const router = useRouter();
   const { slug } = router.query;
 
-  const PAID_KEY = "tmc:paid";
+  const PAID_KEY = "tmc:paid_v1";
   const [paid, setPaid] = useState(false);
 
   useEffect(() => {
@@ -438,7 +438,7 @@ export default function CategoryPage() {
   }
 
   // --- Regular categories ---
-  const list = affirmations?.[key] || [];
+  const list = affirmations?.[key] || affirmations?.[String(key)] || [];
   const isFree = FREE_KEYS.has(key) || paid;
 
   if (!isFree) {
