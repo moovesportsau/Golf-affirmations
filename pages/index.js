@@ -78,6 +78,54 @@ function pickDailyFromList(list, key) {
 
 export default function HomePage() {
   const router = useRouter();
+  
+  // ---------- A2HS (Add to Home Screen) + Feedback ----------
+  const [showA2HS, setShowA2HS] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackText, setFeedbackText] = useState("");
+
+  useEffect(() => {
+    try {
+      const dismissed = localStorage.getItem("tmc:a2hsDismissed") === "1";
+      const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      const isStandalone =
+        window.matchMedia?.("(display-mode: standalone)")?.matches ||
+        window.navigator.standalone === true;
+
+      // Show only on iPhone/iPad Safari when not already installed, and not dismissed
+      if (isIOS && !isStandalone && !dismissed) setShowA2HS(true);
+    } catch {}
+  }, []);
+
+  const dismissA2HS = () => {
+    try { localStorage.setItem("tmc:a2hsDismissed", "1"); } catch {}
+    setShowA2HS(false);
+  };
+
+  const openFeedback = () => setShowFeedback(true);
+  const closeFeedback = () => {
+    setShowFeedback(false);
+    setFeedbackText("");
+  };
+
+  const emailFeedback = () => {
+    const subject = encodeURIComponent("The Mental Caddie – Feedback");
+    const body = encodeURIComponent(
+      `Feedback:\n${feedbackText}\n\nPage: ${typeof window !== "undefined" ? window.location.href : ""}\nDevice: ${typeof navigator !== "undefined" ? navigator.userAgent : ""}`
+    );
+    // no recipient — user can choose email app
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+  };
+
+  const copyFeedback = async () => {
+    try {
+      await navigator.clipboard.writeText(feedbackText);
+      alert("Copied!");
+    } catch {
+      alert("Could not copy. You can still email it.");
+    }
+  };
+
   const [paid, setPaid] = useState(false);
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState("");
@@ -296,6 +344,170 @@ export default function HomePage() {
             specially designed for golfers. Build confidence, improve focus,
             and unlock your true potential on the course.
           </p>
+
+          {/* ---------- A2HS Tooltip ---------- */}
+          {showA2HS && (
+            <div
+              style={{
+                margin: "10px 0 14px",
+                padding: "10px 12px",
+                borderRadius: 12,
+                background: "rgba(0,0,0,0.35)",
+                border: "1px solid rgba(255,255,255,0.18)",
+                color: "white",
+                fontSize: 13,
+                lineHeight: 1.35,
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
+                <div>
+                  <strong>Tip:</strong> Add this to your Home Screen for the best experience.
+                  <div style={{ opacity: 0.9, marginTop: 4 }}>
+                    iPhone: Tap <strong>Share</strong> → <strong>Add to Home Screen</strong>
+                  </div>
+                </div>
+                <button
+                  onClick={dismissA2HS}
+                  style={{
+                    border: "none",
+                    background: "rgba(255,255,255,0.14)",
+                    color: "white",
+                    borderRadius: 10,
+                    padding: "6px 10px",
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    height: 34,
+                  }}
+                >
+                 OK
+                </button>
+              </div>
+            </div>
+          )}
+
+{/* ---------- Feedback Button ---------- */}
+<button
+  onClick={openFeedback}
+  style={{
+    position: "fixed",
+    right: 14,
+    bottom: 14,
+    zIndex: 9999,
+    padding: "10px 12px",
+    borderRadius: 999,
+    border: "1px solid rgba(255,255,255,0.18)",
+    background: "rgba(0,0,0,0.35)",
+    color: "white",
+    fontWeight: 800,
+    fontSize: 13,
+    cursor: "pointer",
+    backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
+  }}
+>
+  Feedback
+</button>
+
+{/* ---------- Feedback Modal ---------- */}
+{showFeedback && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 10000,
+      background: "rgba(0,0,0,0.55)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 14,
+    }}
+  >
+    <div
+      style={{
+        width: "100%",
+        maxWidth: 520,
+        borderRadius: 16,
+        padding: 14,
+        background: "rgba(30,30,30,0.85)",
+        border: "1px solid rgba(255,255,255,0.18)",
+        color: "white",
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ fontWeight: 900, fontSize: 16 }}>Send Feedback</div>
+        <button
+          onClick={closeFeedback}
+          style={{
+            border: "none",
+            background: "rgba(255,255,255,0.14)",
+            color: "white",
+            borderRadius: 10,
+            padding: "6px 10px",
+            fontWeight: 900,
+            cursor: "pointer",
+          }}
+        >
+          ✕
+        </button>
+      </div>
+
+      <textarea
+        value={feedbackText}
+        onChange={(e) => setFeedbackText(e.target.value)}
+        placeholder="Tell us what to improve…"
+        style={{
+          width: "100%",
+          minHeight: 140,
+          marginTop: 10,
+          padding: 10,
+          borderRadius: 12,
+          border: "1px solid rgba(255,255,255,0.18)",
+          background: "rgba(0,0,0,0.25)",
+          color: "white",
+          fontSize: 14,
+        }}
+      />
+
+      <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
+        <button
+          onClick={emailFeedback}
+          disabled={!feedbackText.trim()}
+          style={{
+            padding: "10px 12px",
+            borderRadius: 12,
+            border: "none",
+            background: "white",
+            color: "#111",
+            fontWeight: 900,
+            cursor: "pointer",
+            flex: "1 1 140px",
+            opacity: feedbackText.trim() ? 1 : 0.6,
+          }}
+        >
+          Email
+        </button>
+
+        <button
+          onClick={copyFeedback}
+          disabled={!feedbackText.trim()}
+          style={{
+            padding: "10px 12px",
+            borderRadius: 12,
+            border: "1px solid rgba(255,255,255,0.22)",
+            background: "rgba(255,255,255,0.12)",
+            color: "white",
+            fontWeight: 900,
+            cursor: "pointer",
+            flex: "1 1 140px",
+            opacity: feedbackText.trim() ? 1 : 0.6,
+          }}
+        >
+          Copy
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
           {/* Daily Affirmation (shows before unlock button) */}
           <div
