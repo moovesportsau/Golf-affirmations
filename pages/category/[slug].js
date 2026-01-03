@@ -263,25 +263,59 @@ export default function CategoryPage() {
     } catch {}
   };
 
-  // --- Coach Notes: keep as simple free text + share ---
+ // --- Coach Notes: saved notes that behave like affirmations ---
   if (key === "coachNotes") {
-    const [notes, setNotes] = useState("");
+    const STORAGE_KEY = "tmc:coachNotes:list";
+
+    const [input, setInput] = useState("");
+    const [notesList, setNotesList] = useState([]);
+    const [index, setIndex] = useState(0);
 
     useEffect(() => {
       try {
-        const saved = localStorage.getItem("coachNotes:text");
-        if (saved) setNotes(saved);
-      } catch {}
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        const safe = Array.isArray(arr) ? arr : [];
+        setNotesList(safe);
+        setIndex(safe.length ? safe.length - 1 : 0);
+      } catch {
+        setNotesList([]);
+        setIndex(0);
+      }
     }, []);
 
-    const save = () => {
+    const persist = (arr) => {
+      setNotesList(arr);
       try {
-        localStorage.setItem("coachNotes:text", notes);
-        setToastMsg("Saved ✓");
-      } catch {
-        setToastMsg("Could not save");
-      }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+      } catch {}
     };
+
+    const addNote = () => {
+      const text = input.trim();
+      if (!text) return;
+
+      const nextArr = [...notesList, text];
+      persist(nextArr);
+      setIndex(nextArr.length - 1);
+      setInput("");
+      setToastMsg("Saved ✓");
+    };
+
+    const prev = () => {
+      if (!notesList.length) return;
+      setIndex((i) => (i - 1 + notesList.length) % notesList.length);
+    };
+
+    const next = () => {
+      if (!notesList.length) return;
+      setIndex((i) => (i + 1) % notesList.length);
+    };
+
+    const current =
+      notesList.length > 0
+        ? notesList[index]
+        : "No coach notes yet. Add your first note below.";
 
     return (
       <div style={styles.page}>
@@ -291,42 +325,60 @@ export default function CategoryPage() {
               <button style={styles.backBtn} onClick={() => router.push("/")}>
                 ← Home
               </button>
-              <div style={styles.pill}>Notes</div>
+              <div style={styles.pill}>
+                {notesList.length ? `${index + 1}/${notesList.length}` : "0/0"}
+              </div>
             </div>
 
             <h1 style={styles.title}>Coach Notes</h1>
-            <p style={styles.sub}>Write anything you want to remember.</p>
+            <p style={styles.sub}>Add notes and flick through them any time.</p>
 
+            {/* Display like an affirmation */}
             <div style={styles.tile}>
-              <textarea
-                style={styles.textarea}
-                placeholder="Write your coach notes here…"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-              />
+              <p style={styles.quote}>{current}</p>
             </div>
 
+            {/* Prev / Next */}
             <div style={styles.row}>
-              <button style={styles.primaryBtn} onClick={save}>
-                Save
+              <button style={styles.softBtn} onClick={prev} disabled={!notesList.length}>
+                ← Prev
               </button>
-              <button
-                style={styles.softBtn}
-                onClick={() => shareWithLink(notes || "My Coach Notes")}
-              >
-                Share
+              <button style={styles.primaryBtn} onClick={next} disabled={!notesList.length}>
+                Next →
               </button>
+            </div>
+
+            {/* Add new note */}
+            <textarea
+              style={styles.textarea}
+              placeholder="Write a coach note…"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
+
+            <div style={styles.row}>
+              <button style={styles.primaryBtn} onClick={addNote}>
+                Save Note →
+              </button>
+
               <button
                 style={styles.softBtn}
                 onClick={() => {
-                  setNotes("");
-                  try {
-                    localStorage.removeItem("coachNotes:text");
-                  } catch {}
+                  persist([]);
+                  setInput("");
+                  setIndex(0);
                   setToastMsg("Cleared ✓");
                 }}
               >
-                Clear
+                Clear All
+              </button>
+
+              <button
+                style={styles.softBtn}
+                onClick={() => shareWithLink(current)}
+                disabled={!notesList.length}
+              >
+                Share
               </button>
             </div>
 
