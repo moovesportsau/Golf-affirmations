@@ -79,6 +79,10 @@ function pickDailyFromList(list, key) {
 
 export default function HomePage() {
   const router = useRouter();
+
+  const isAdmin =
+  typeof window !== "undefined" &&
+  new URLSearchParams(window.location.search).get("admin") === "1";
   
   // ---------- A2HS (Add to Home Screen) + Feedback ----------
   const [showA2HS, setShowA2HS] = useState(false);
@@ -569,8 +573,11 @@ export default function HomePage() {
                   setTimeout(() => setToast(""), 1400);
                 }}
               >
-                (Admin) Lock again
-              </button>
+              {isAdmin && (
+                <button style={styles.softBtn} onClick={lockAgain}>
+                  (Admin) Lock again
+                </button>
+              )}
             </div>
           )}
 
