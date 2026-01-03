@@ -346,45 +346,49 @@ export default function HomePage() {
             and unlock your true potential on the course.
           </p>
 
-          {/* ---------- A2HS Tooltip ---------- */}
-          {showA2HS && (
-            <div
-              style={{
-                margin: "10px 0 14px",
-                padding: "10px 12px",
-                borderRadius: 12,
-                background: "rgba(0,0,0,0.35)",
-                border: "1px solid rgba(255,255,255,0.18)",
-                color: "white",
-                fontSize: 13,
-                lineHeight: 1.35,
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 10 }}>
-                <div>
-                  <strong>Tip:</strong> Add this to your Home Screen for the best experience.
-                  <div style={{ opacity: 0.9, marginTop: 4 }}>
-                    iPhone: Tap <strong>Share</strong> → <strong>Add to Home Screen</strong>
-                  </div>
-                </div>
-                <button
-                  onClick={dismissA2HS}
-                  style={{
-                    border: "none",
-                    background: "rgba(255,255,255,0.14)",
-                    color: "white",
-                    borderRadius: 10,
-                    padding: "6px 10px",
-                    fontWeight: 800,
-                    cursor: "pointer",
-                    height: 34,
-                  }}
-                >
-                 OK
-                </button>
-              </div>
-            </div>
-          )}
+{/* ---------- A2HS Tooltip (polished) ---------- */}
+{showA2HS && (
+  <div
+    style={{
+      margin: "12px 0 16px",
+      padding: "12px 14px",
+      borderRadius: 14,
+      background: "rgba(255,255,255,0.12)",
+      border: "1px solid rgba(255,255,255,0.18)",
+      backdropFilter: "blur(10px)",
+      WebkitBackdropFilter: "blur(10px)",
+      color: "white",
+    }}
+  >
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+      <div style={{ fontSize: 13, lineHeight: 1.4 }}>
+        <div style={{ fontWeight: 900, marginBottom: 4 }}>
+          Use it like an app
+        </div>
+        <div style={{ opacity: 0.9 }}>
+          Add <strong>The Mental Caddie</strong> to your Home Screen for the best experience.
+        </div>
+      </div>
+
+      <button
+        onClick={dismissA2HS}
+        style={{
+          alignSelf: "flex-start",
+          border: "none",
+          background: "rgba(255,255,255,0.18)",
+          color: "white",
+          borderRadius: 999,
+          padding: "6px 12px",
+          fontWeight: 900,
+          fontSize: 12,
+          cursor: "pointer",
+        }}
+      >
+        Got it
+      </button>
+    </div>
+  </div>
+)}
 
 {/* ---------- Feedback Button ---------- */}
 <button
