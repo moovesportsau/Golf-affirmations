@@ -441,6 +441,15 @@ export default function CategoryPage() {
   const list = affirmations?.[key] || affirmations?.[String(key)] || [];
   const isFree = FREE_KEYS.has(key) || paid;
 
+  const [index, setIndex] = useState(0);  
+  const [offsetX, setOffsetX] = useState(0);
+  const [opacity, setOpacity] = useState(1);
+  const animating = useRef(false);
+        
+  useEffect(() => {
+    setIndex(0);
+  }, [key]);
+
   if (!isFree) {
     return (
       <div style={styles.page}>
@@ -461,15 +470,6 @@ export default function CategoryPage() {
       </div>
     );
   }
-
-  const [index, setIndex] = useState(0);
-  const [offsetX, setOffsetX] = useState(0);
-  const [opacity, setOpacity] = useState(1);
-  const animating = useRef(false);
-
-  useEffect(() => {
-    setIndex(0);
-  }, [key]);
 
   const safeLen = list.length || 1;
 
