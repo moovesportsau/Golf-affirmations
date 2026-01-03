@@ -370,29 +370,38 @@ export default function CategoryPage() {
             />
 
             <div style={styles.row}>
-              <button style={styles.primaryBtn} onClick={addNote}>
-                Save Note →
-              </button>
+             <button style={styles.primaryBtn} onClick={addNote}>
+              Save Note →
+             </button>
 
-              <button
-                style={styles.softBtn}
-                onClick={() => {
-                  persist([]);
-                  setInput("");
-                  setIndex(0);
-                  setToastMsg("Cleared ✓");
-                }}
-              >
-               Clear All
-              </button>
+             <button
+              style={styles.softBtn}
+              onClick={deleteCurrent}
+              disabled={!notesList.length}
+             >
+              Delete Note
+             </button>
 
-              <button
-                style={styles.softBtn}
-                onClick={() => shareWithLink(current)}
-                disabled={!notesList.length}
-              >
-                Share
-              </button>
+             <button
+              style={styles.softBtn}
+              onClick={() => {
+               persist([]);
+               setInput("");
+               setIndex(0);
+               setToastMsg("Cleared ✓");
+              }}
+               disabled={!notesList.length}
+             >
+              Clear All
+             </button>
+
+             <button
+              style={styles.softBtn}
+              onClick={() => shareWithLink(current)}
+              disabled={!notesList.length}
+             >
+              Share
+             </button>
             </div>
 
             {toast ? <div style={styles.toast}>{toast}</div> : null}
