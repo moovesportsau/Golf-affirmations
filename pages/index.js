@@ -563,19 +563,22 @@ export default function HomePage() {
                 Favorites
               </button>
               <button
-                style={styles.ghostBtn}
-                onClick={() => {
-                  try {
-                    localStorage.removeItem(PAID_KEY);
-                  } catch {}
-                  setPaid(false);
-                  setToast("Locked again");
-                  setTimeout(() => setToast(""), 1400);
-                }}
+               style={styles.ghostBtn}
+               onClick={() => {
+                try {
+                 localStorage.removeItem(PAID_KEY);
+                } catch {}
+                setPaid(false);
+                setToast("Locked again");
+                setTimeout(() => setToast(""), 1400);
+               }}
               >
+               Lock again
+              </button>
+
               {isAdmin && (
                 <button style={styles.softBtn} onClick={lockAgain}>
-                  (Admin) Lock again
+                 (Admin) Lock again
                 </button>
               )}
             </div>
