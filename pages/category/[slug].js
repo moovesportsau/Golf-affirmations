@@ -302,6 +302,19 @@ export default function CategoryPage() {
       setToastMsg("Saved ✓");
     };
 
+      const deleteCurrent = () => {
+      if (!notesList.length) return;
+
+      const nextArr = notesList.filter((_, i) => i !== index);
+      persist(nextArr);
+
+      // Adjust index so it stays in range
+      const nextIndex = Math.max(0, Math.min(index, nextArr.length - 1));
+      setIndex(nextIndex);
+
+      setToastMsg("Deleted ✓");
+    };
+
     const prev = () => {
       if (!notesList.length) return;
       setIndex((i) => (i - 1 + notesList.length) % notesList.length);
@@ -370,7 +383,16 @@ export default function CategoryPage() {
                   setToastMsg("Cleared ✓");
                 }}
               >
-                Clear All
+
+              <button
+                style={styles.softBtn}
+                onClick={deleteCurrent}
+                disabled={!notesList.length}
+              >
+                Delete Note
+              </button>
+
+               Clear All
               </button>
 
               <button
