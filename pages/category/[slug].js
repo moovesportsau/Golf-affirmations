@@ -6,6 +6,15 @@ export default function CategoryPage() {
   const router = useRouter();
   const { slug } = router.query;
 
+  const PAID_KEY = "tmc:paid";
+  const [paid, setPaid] = useState(false);
+
+  useEffect(() => {
+    try {
+      setPaid(localStorage.getItem(PAID_KEY) === "1");
+    } catch {}
+  }, []);
+
   // Free categories (locked ones show a lock screen)
   const FREE_KEYS = new Set(["Confidence", "Focus", "coachNotes"]);
 
@@ -203,6 +212,23 @@ export default function CategoryPage() {
 
   const key = keyFromSlug(slug);
   const title = TITLES[key] || String(slug);
+
+ // ---- Paid unlock flag ----
+  const [isPaid, setIsPaid] = useState(false);
+
+  useEffect(() => {
+    try {
+      // Support a couple possible keys (in case older code used a different one)
+      const v =
+        localStorage.getItem("tmc:paid") ||
+        localStorage.getItem("paid") ||
+        localStorage.getItem("tmc_paid");
+
+      setIsPaid(v === "1" || v === "true");
+    } catch {
+      setIsPaid(false);
+    }
+  }, []);
 
   // ---- Favorites storage (supports old keys too) ----
   const FAVORITES_KEYS = ["tmc:favorites", "tmf_favorites", "tmc_favorites"];
@@ -413,7 +439,7 @@ export default function CategoryPage() {
 
   // --- Regular categories ---
   const list = affirmations?.[key] || [];
-  const isFree = FREE_KEYS.has(key);
+  const isFree = FREE_KEYS.has(key) || PAID;
 
   if (!isFree) {
     return (
