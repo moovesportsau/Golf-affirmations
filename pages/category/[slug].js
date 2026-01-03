@@ -213,6 +213,15 @@ export default function CategoryPage() {
   const key = keyFromSlug(slug);
   const title = TITLES[key] || String(slug);
 
+  const PAID_KEY = "tmc:paid_v1";
+  const paid = (() => {
+    try {
+      return typeof window !== "undefined" && localStorage.getItem(PAID_KEY) === "1";
+    } catch {
+      return false;
+    }
+  })();
+
  // ---- Paid unlock flag ----
   const [isPaid, setIsPaid] = useState(false);
 
