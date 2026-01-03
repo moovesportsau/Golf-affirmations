@@ -46,43 +46,35 @@ const PAID_KEY = "tmc:paid_v1";
 
 /* ================= DAILY AFFIRMATION HELPERS ================= */
 function getBrisbaneDayKey(date = new Date()) {
-  const parts = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Australia/Brisbane",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).formatToParts(date);
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Australia/Brisbane",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
 
-  const y = parts.find((p) => p.type === "year")?.value;
-  const m = parts.find((p) => p.type === "month")?.value;
-  const d = parts.find((p) => p.type === "day")?.value;
+  const y = parts.find((p) => p.type === "year")?.value;
+  const m = parts.find((p) => p.type === "month")?.value;
+  const d = parts.find((p) => p.type === "day")?.value;
 
-  return `${y}-${m}-${d}`;
+  return `${y}-${m}-${d}`; // YYYY-MM-DD
 }
 
-function getDailyAffirmation() {
-  const STORAGE_KEY = "tmc:dailyAffirmation";
-  const todayKey = getBrisbaneDayKey();
-
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    const parsed = JSON.parse(saved);
-    if (parsed.day === todayKey) return parsed;
-  }
-
-  // ALL categories
-  const categories = Object.keys(affirmations);
-  const category =
-    categories[Math.floor(Math.random() * categories.length)];
-
-  const list = affirmations[category];
-  const text = list[Math.floor(Math.random() * list.length)];
-
-  const payload = { day: todayKey, category, text };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-
-  return payload;
+function hashStringToInt(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
 }
+
+function pickDailyFromList(list, key) {
+  if (!Array.isArray(list) || list.length === 0) return "";
+  const idx = hashStringToInt(key) % list.length;
+  return list[idx];
+}
+/* ============================================================= */
 
 export default function HomePage() {
   const router = useRouter();
@@ -304,79 +296,6 @@ export default function HomePage() {
             specially designed for golfers. Build confidence, improve focus,
             and unlock your true potential on the course.
           </p>
-
-{/* Daily Affirmation */}
-{typeof window !== "undefined" && (() => {
-  const daily = getDailyAffirmation();
-  return (
-    <div
-      style={{
-        marginTop: 12,
-        padding: 14,
-        borderRadius: 14,
-        background: "rgba(0,0,0,0.28)",
-        border: "1px solid rgba(255,255,255,0.2)",
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
-        <strong style={{ fontSize: 13, letterSpacing: 1, opacity: 0.9 }}>
-          DAILY AFFIRMATION
-        </strong>
-        <span style={{ fontSize: 12, opacity: 0.85 }}>
-          {daily.category}
-        </span>
-      </div>
-
-      <div style={{ marginTop: 10, fontSize: 16, lineHeight: 1.55, fontWeight: 800 }}>
-        “{daily.text}”
-      </div>
-
-      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 }}>
-        <button
-          style={{
-            flex: "1 1 160px",
-            padding: "12px 12px",
-            borderRadius: 12,
-            border: "1px solid rgba(255,255,255,0.25)",
-            background: "rgba(255,255,255,0.12)",
-            color: "white",
-            fontWeight: 900,
-            cursor: "pointer",
-          }}
-          onClick={() => router.push(`/category/${daily.category}`)}
-        >
-          Open Category →
-        </button>
-
-        <button
-          style={{
-            flex: "1 1 160px",
-            padding: "12px 12px",
-            borderRadius: 12,
-            border: "1px solid rgba(255,255,255,0.25)",
-            background: "rgba(255,255,255,0.12)",
-            color: "white",
-            fontWeight: 900,
-            cursor: "pointer",
-          }}
-          onClick={async () => {
-            const link = window.location.origin;
-            const text = `Daily Affirmation — The Mental Caddie\n\n“${daily.text}”\n\n${link}`;
-            try {
-              if (navigator.share) await navigator.share({ text });
-              else {
-                await navigator.clipboard.writeText(text);
-                alert("Copied");
-              }
-            } catch {}
-          }}
-        >
-          Share
-        </button>
-      </div>
-    </div>
-  );
-})()}
 
           {/* Daily Affirmation (shows before unlock button) */}
           <div
