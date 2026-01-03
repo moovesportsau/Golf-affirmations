@@ -383,15 +383,6 @@ export default function CategoryPage() {
                   setToastMsg("Cleared ✓");
                 }}
               >
-
-              <button
-                style={styles.softBtn}
-                onClick={deleteCurrent}
-                disabled={!notesList.length}
-              >
-                Delete Note
-              </button>
-
                Clear All
               </button>
 
