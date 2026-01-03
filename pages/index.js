@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { affirmations } from "../data/affirmations";
@@ -114,7 +115,7 @@ export default function HomePage() {
       `Feedback:\n${feedbackText}\n\nPage: ${typeof window !== "undefined" ? window.location.href : ""}\nDevice: ${typeof navigator !== "undefined" ? navigator.userAgent : ""}`
     );
     // no recipient — user can choose email app
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:moovesportsau@gmail.com?subject=${subject}&body=${body}`;
   };
 
   const copyFeedback = async () => {
