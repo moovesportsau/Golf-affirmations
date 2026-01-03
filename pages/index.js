@@ -576,11 +576,6 @@ export default function HomePage() {
                Lock again
               </button>
 
-              {isAdmin && (
-                <button style={styles.softBtn} onClick={lockAgain}>
-                 (Admin) Lock again
-                </button>
-              )}
             </div>
           )}
 
