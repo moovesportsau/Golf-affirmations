@@ -562,18 +562,6 @@ export default function HomePage() {
               <button style={styles.unlockBtn} onClick={() => router.push("/favorites")}>
                 Favorites
               </button>
-              <button
-               style={styles.ghostBtn}
-               onClick={() => {
-                try {
-                 localStorage.removeItem(PAID_KEY);
-                } catch {}
-                setPaid(false);
-                setToast("Locked again");
-                setTimeout(() => setToast(""), 1400);
-               }}
-              >
-
             </div>
           )}
 
