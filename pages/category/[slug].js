@@ -215,6 +215,7 @@ export default function CategoryPage() {
 
  // ---- Paid unlock flag ----
   const [isPaid, setIsPaid] = useState(false);
+  const paid = isPaid;
 
   useEffect(() => {
     try {
