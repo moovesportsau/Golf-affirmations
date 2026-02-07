@@ -204,7 +204,11 @@ export default function HomePage() {
   const isLocked = (key) => !paid && !FREE_KEYS.has(key);
 
   const goCategory = (key) => {
-    router.push(`/category/${key}`);
+    if (key === "OnCourseCaddie") {
+      router.push("/on-course-caddie");
+    } else {
+      router.push(`/category/${key.toLowerCase()}`);
+    }
   };
 
   const startCheckout = async () => {
