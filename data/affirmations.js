@@ -235,7 +235,7 @@ export const affirmations = {
   ],
   "Pressure": [
     "Breathe. Commit.",
-    "Pressure means I care — and I trust my process."
-    "Mental Caddie reminder: Pressue is fine, frustration is not."
+    "Pressure means I care — and I trust my process.",
+    "Mental Caddie reminder: Pressure is fine, frustration is not.",
   ],
 };
