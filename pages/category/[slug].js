@@ -179,27 +179,39 @@ export default function CategoryPage() {
 
   if (!slug) return null;
 
-  // --- Normalize incoming slug -> data key ---
-  const keyFromSlug = (raw) => {
-    const s = String(raw || "").trim();
-    if (!s) return "";
-    const lower = s.toLowerCase();
-    if (lower === "coachnotes" || lower === "coach-notes") return "coachNotes";
+// --- Normalize incoming slug -> data key ---
+const keyFromSlug = (raw) => {
+  const s = String(raw || "").trim();
+  if (!s) return "";
 
-    const cleaned = s.replace(/[-_\s]/g, "").toLowerCase();
-    const map = {
-      confidence: "Confidence",
-      focus: "Focus",
-      technique: "Technique",
-      growth: "Growth",
-      preround: "PreRound",
-      tournamentmindset: "TournamentMindset",
-      coursemanagement: "CourseManagement",
-      resilience: "Resilience",
-      recovery: "Recovery",
-    };
-    return map[cleaned] || s;
+  const lower = s.toLowerCase();
+  if (lower === "coachnotes" || lower === "coach-notes") return "coachNotes";
+
+  // normalize slug (remove hyphens, underscores, spaces)
+  const cleaned = s.replace(/[-_\s]/g, "").toLowerCase();
+
+  const map = {
+    // core categories
+    confidence: "Confidence",
+    focus: "Focus",
+    technique: "Technique",
+    growth: "Growth",
+    tournamentmindset: "TournamentMindset",
+    coursemanagement: "CourseManagement",
+    resilience: "Resilience",
+    recovery: "Recovery",
+
+    // situational / caddie categories (MATCH data/affirmations.js KEYS EXACTLY)
+    preround: "Pre-Round",
+    teeshot: "Tee-Shot",
+    approach: "Approach",
+    putting: "Putting",
+    comeback: "Comeback",
+    pressure: "Pressure",
   };
+
+  return map[cleaned] || s;
+};
 
   const key = keyFromSlug(slug);
   const title = TITLES[key] || String(slug);
