@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { affirmations } from "../data/affirmations";
 
 const ORDER = [
+  "OnCourseCaddie",
   "Confidence",
   "Focus",
   "Technique",
@@ -17,6 +18,7 @@ const ORDER = [
 ];
 
 const TITLES = {
+  OnCourseCaddie: "On-Course Caddie",
   Confidence: "Confidence",
   Focus: "Focus",
   Technique: "Technique",
@@ -27,7 +29,7 @@ const TITLES = {
   Resilience: "Resilience",
   Recovery: "Recovery",
   "Pre-Round": "Pre-Round",
-  "Tee Shot": "Tee Shot",
+  "Tee-Shot": "Tee Shot",
   "Approach": "Approach",
   "Putting": "Putting",
   "Comeback": "After a Bad Shot",
@@ -36,6 +38,7 @@ const TITLES = {
 };
 
 const DESCS = {
+  OnCourseCaddie: "Immediate help on the course.",
   Confidence: "Build belief and trust in your swing under pressure.",
   Focus: "Stay present, calm, and locked in on every shot.",
   Technique: "Commit to fundamentals and swing with freedom.",
