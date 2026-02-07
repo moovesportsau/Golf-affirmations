@@ -6,15 +6,6 @@ export default function CategoryPage() {
   const router = useRouter();
   const { slug } = router.query;
 
-  const PAID_KEY = "tmc:paid_v1";
-  const [paid, setPaid] = useState(false);
-
-  useEffect(() => {
-    try {
-      setPaid(localStorage.getItem(PAID_KEY) === "1");
-    } catch {}
-  }, []);
-
   // Free categories (locked ones show a lock screen)
   const FREE_KEYS = new Set(["Confidence", "Focus", "coachNotes"]);
 
@@ -221,6 +212,7 @@ export default function CategoryPage() {
     try {
       // Support a couple possible keys (in case older code used a different one)
       const v =
+        localStorage.getItem("tmc:paid_v1") ||
         localStorage.getItem("tmc:paid") ||
         localStorage.getItem("paid") ||
         localStorage.getItem("tmc_paid");
