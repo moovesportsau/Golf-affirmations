@@ -205,35 +205,35 @@ export const affirmations = {
     "My mindset never wavers.",
     "I finish every hole with belief.",
   ],
-"pre-round": [
+"Pre-Round": [
     "Calm body. Clear plan.",
     "I trust my preparation and commit to today’s process.",
     "Mental Caddie reminder: You don’t need perfect — you need committed.",
     "Today, I focus on decisions, not outcomes."
   ],
-  "tee-shot": [
+  "Tee-Shot": [
     "Pick it. Commit.",
     "I choose a clear target and swing with confidence.",
     "Mental Caddie reminder: Small target. Free swing.",
     "Balanced and smooth."
   ],
-  "approach": [
+  "Approach": [
     "I commit fully to the club and shot I’ve chosen.",
     "Solid contact.",
     "Mental Caddie reminder: Middle of the green is always smart."
   ],
-  "putting": [
+  "Putting": [
     "See it. Roll it.",
     "I trust my read and roll the ball with confidence.",
     "Mental Caddie reminder: Speed first.",
     "Smooth pace."
   ],
-  "recovery": [
+  "Comeback": [
     "Next shot only.",
     "That shot is finished. My focus moves forward.",
     "Mental Caddie reminder: Bad shots happen. Poor decisions don’t need to."
   ],
-  "pressure": [
+  "Pressure": [
     "Breathe. Commit.",
     "Pressure means I care — and I trust my process."
   ],

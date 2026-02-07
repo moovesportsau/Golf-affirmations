@@ -30,7 +30,7 @@ const TITLES = {
   "Tee Shot": "Tee Shot",
   "Approach": "Approach",
   "Putting": "Putting",
-  "Recovery": "After a Bad Shot",
+  "Comeback": "After a Bad Shot",
   "Pressure": "Pressure",
   coachNotes: "Coach Notes",
 };
