@@ -51,7 +51,7 @@ const DESCS = {
   coachNotes: "Write and save personal notes for your game.",
 };
 
-const FREE_KEYS = new Set(["Confidence", "Focus", "coachNotes"]);
+const FREE_KEYS = new Set(["OnCourseCaddie", "Confidence", "Focus", "coachNotes"]);
 const PAID_KEY = "tmc:paid_v1";
 
 /* ================= DAILY AFFIRMATION HELPERS ================= */
