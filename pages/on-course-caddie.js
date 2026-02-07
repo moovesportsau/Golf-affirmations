@@ -2,14 +2,39 @@ import Head from "next/head";
 import Link from "next/link";
 
 export default function OnCourseCaddieHub() {
-  const items = [
-    { title: "Pre-Round", href: "/category/pre-round", desc: "Get your mind calm, clear, and committed before the first tee." },
-    { title: "Tee Shot", href: "/category/tee-shot", desc: "Commit to a target and swing with freedom off the tee." },
-    { title: "Approach", href: "/category/approach", desc: "Pick smart targets and trust your strike into greens." },
-    { title: "Putting", href: "/category/putting", desc: "Read it, trust it, and roll it with great pace." },
-    { title: "Comeback", href: "/category/comeback", desc: "Reset fast after a mistake and get back to your process." },
-    { title: "Pressure", href: "/category/pressure", desc: "Stay calm and committed when it matters most." },
-  ];
+
+const items = [
+  {
+    title: "Pre-Round",
+    href: "/category/pre-round",
+    desc: "Settle your mind. Commit to how you want to play today.",
+  },
+  {
+    title: "Tee Shot",
+    href: "/category/tee-shot",
+    desc: "Pick a line. Commit to it. Swing free.",
+  },
+  {
+    title: "Approach",
+    href: "/category/approach",
+    desc: "Smart target. Smooth strike. Middle of the green is good.",
+  },
+  {
+    title: "Putting",
+    href: "/category/putting",
+    desc: "Read it. Trust it. Roll it with great pace.",
+  },
+  {
+    title: "Comeback",
+    href: "/category/comeback",
+    desc: "That shot’s over. Let’s focus on the next one.",
+  },
+  {
+    title: "Pressure",
+    href: "/category/pressure",
+    desc: "Slow breath. Same routine. You’re ready for this.",
+  },
+];
 
   return (
     <>
@@ -18,9 +43,9 @@ export default function OnCourseCaddieHub() {
       </Head>
 
       <main style={{ padding: 16, maxWidth: 720, margin: "0 auto" }}>
-        <h1 style={{ marginBottom: 8 }}>On-Course Caddie</h1>
-        <p style={{ marginTop: 0, opacity: 0.85 }}>
-          Pick the moment you’re in — then swipe through caddie-style prompts built for the course.
+        <h1 style={{ marginBottom: 6 }}>On-Course Caddie</h1>
+        <p style={{ marginTop: 0, opacity: 0.9 }}>
+          I’ve got you. Pick the shot you’re facing.
         </p>
 
         <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
