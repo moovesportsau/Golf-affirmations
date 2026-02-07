@@ -207,34 +207,35 @@ export const affirmations = {
   ],
 "Pre-Round": [
     "Calm body. Clear plan.",
-    "I trust my preparation and commit to today’s process.",
-    "Mental Caddie reminder: You don’t need perfect — you need committed.",
-    "Today, I focus on decisions, not outcomes."
+    "Trust your  preparation and commit to today’s process.",
+    "Mental Caddie reminder: You don’t need perfect — stay committed.",
+    "Focus on decisions, not outcomes."
   ],
   "Tee-Shot": [
     "Pick it. Commit.",
-    "I choose a clear target and swing with confidence.",
+    "Choose a clear target and swing with confidence.",
     "Mental Caddie reminder: Small target. Free swing.",
     "Balanced and smooth."
   ],
   "Approach": [
-    "I commit fully to the club and shot I’ve chosen.",
+    "Commit fully to the club and shot you’ve chosen.",
     "Solid contact.",
-    "Mental Caddie reminder: Middle of the green is always smart."
+    "Mental Caddie reminder: Middle of the green is smart."
   ],
   "Putting": [
     "See it. Roll it.",
-    "I trust my read and roll the ball with confidence.",
+    "Trust your  read and roll the ball with confidence.",
     "Mental Caddie reminder: Speed first.",
     "Smooth pace."
   ],
   "Comeback": [
     "Next shot only.",
-    "That shot is finished. My focus moves forward.",
+    "That shot is finished. Focus moves forward.",
     "Mental Caddie reminder: Bad shots happen. Poor decisions don’t need to."
   ],
   "Pressure": [
     "Breathe. Commit.",
     "Pressure means I care — and I trust my process."
+    "Mental Caddie reminder: Pressue is fine, frustration is not."
   ],
 };
