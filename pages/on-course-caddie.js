@@ -1,6 +1,85 @@
 import Head from "next/head";
 import Link from "next/link";
 
+const styles = {
+  page: {
+    minHeight: "100vh",
+    backgroundImage: 'url("/golf-bg.jpg")',
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    fontFamily:
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  },
+  overlay: {
+    minHeight: "100vh",
+    paddingTop: "max(14px, env(safe-area-inset-top))",
+    paddingBottom: "max(24px, env(safe-area-inset-bottom))",
+    paddingLeft: 12,
+    paddingRight: 12,
+    background: "linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.35))",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+  card: {
+    width: "100%",
+    maxWidth: 560,
+    boxSizing: "border-box",
+    margin: "0 auto",
+    borderRadius: 18,
+    padding: 14,
+    background: "rgba(255,255,255,0.12)",
+    border: "1px solid rgba(255,255,255,0.18)",
+    backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
+    color: "white",
+  },
+  h1: {
+    fontSize: 34,
+    fontWeight: 900,
+    margin: "8px 0 6px",
+    letterSpacing: -0.5,
+    lineHeight: 1.05,
+  },
+  p: {
+    fontSize: 14,
+    opacity: 0.9,
+    margin: "0 0 14px",
+    lineHeight: 1.35,
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gap: 10,
+  },
+  tile: {
+    borderRadius: 16,
+    padding: 14,
+    background: "rgba(0,0,0,0.28)",
+    border: "1px solid rgba(255,255,255,0.2)",
+    cursor: "pointer",
+  },
+  tileTitleRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 6,
+  },
+  tileTitle: {
+    fontSize: 18,
+    fontWeight: 900,
+    margin: 0,
+  },
+  tileDesc: {
+    margin: 0,
+    opacity: 0.9,
+    lineHeight: 1.35,
+    fontSize: 13,
+  },
+};
+
 export default function OnCourseCaddieHub() {
 
 const items = [
@@ -42,37 +121,33 @@ const items = [
         <title>On-Course Caddie</title>
       </Head>
 
-      <main style={{ padding: 16, maxWidth: 720, margin: "0 auto" }}>
-        <h1 style={{ marginBottom: 6 }}>On-Course Caddie</h1>
-        <p style={{ marginTop: 0, opacity: 0.9 }}>
-          I’ve got you. Pick the shot you’re facing.
-        </p>
+<main style={styles.page}>
+  <div style={styles.overlay}>
+    <div style={styles.card}>
+      <h1 style={styles.h1}>On-Course Caddie</h1>
+      <p style={styles.p}>
+        Pick the moment you’re in — calm cues for the next shot.
+      </p>
 
-        <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
-          {items.map((it) => (
-            <Link
-              key={it.href}
-              href={it.href}
-              style={{
-                display: "block",
-                padding: 14,
-                border: "1px solid rgba(255,255,255,0.12)",
-                borderRadius: 12,
-                textDecoration: "none",
-              }}
-            >
-              <div style={{ fontWeight: 700, marginBottom: 4 }}>{it.title}</div>
-              <div style={{ opacity: 0.85, fontSize: 14 }}>{it.desc}</div>
-            </Link>
-          ))}
-        </div>
-
-        <div style={{ marginTop: 18 }}>
-          <Link href="/" style={{ opacity: 0.85 }}>
-            ← Back to Categories
+      <div style={styles.grid}>
+        {items.map((it) => (
+          <Link
+            key={it.href}
+            href={it.href}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <div style={styles.tile}>
+              <div style={styles.tileTitleRow}>
+                <h2 style={styles.tileTitle}>{it.title}</h2>
+              </div>
+              <p style={styles.tileDesc}>{it.desc}</p>
+            </div>
           </Link>
-        </div>
-      </main>
-    </>
-  );
+        ))}
+      </div>
+    </div>
+  </div>
+</main>
+</>
+);
 }
