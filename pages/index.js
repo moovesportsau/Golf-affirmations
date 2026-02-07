@@ -26,6 +26,12 @@ const TITLES = {
   CourseManagement: "Course Management",
   Resilience: "Resilience",
   Recovery: "Recovery",
+  "Pre-Round": "Pre-Round",
+  "Tee Shot": "Tee Shot",
+  "Approach": "Approach",
+  "Putting": "Putting",
+  "Recovery": "After a Bad Shot",
+  "Pressure": "Pressure",
   coachNotes: "Coach Notes",
 };
 
