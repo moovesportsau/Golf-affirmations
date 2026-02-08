@@ -1,5 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+
 
 const styles = {
   page: {
@@ -82,35 +84,37 @@ const styles = {
 
 export default function OnCourseCaddieHub() {
 
+const router = useRouter();
+
 const items = [
   {
     title: "Pre-Round",
-    href: "/category/pre-round",
+    href: "/category/Pre-Round",
     desc: "Settle your mind. Commit to how you want to play today.",
   },
   {
     title: "Tee Shot",
-    href: "/category/tee-shot",
+    href: "/category/Tee-Shot",
     desc: "Pick a line. Commit to it. Swing free.",
   },
   {
     title: "Approach",
-    href: "/category/approach",
+    href: "/category/Approach",
     desc: "Smart target. Smooth strike. Middle of the green is good.",
   },
   {
     title: "Putting",
-    href: "/category/putting",
+    href: "/category/Putting",
     desc: "Read it. Trust it. Roll it with great pace.",
   },
   {
     title: "Comeback",
-    href: "/category/comeback",
+    href: "/category/Comeback",
     desc: "That shot’s over. Let’s focus on the next one.",
   },
   {
     title: "Pressure",
-    href: "/category/pressure",
+    href: "/category/Pressure",
     desc: "Slow breath. Same routine. You’re ready for this.",
   },
 ];
@@ -124,6 +128,26 @@ const items = [
 <main style={styles.page}>
   <div style={styles.overlay}>
     <div style={styles.card}>
+      
+      <div
+        onClick={() => router.push("/")}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          padding: "8px 12px",
+          borderRadius: 999,
+          background: "rgba(255,255,255,0.12)",
+          border: "1px solid rgba(255,255,255,0.18)",
+          fontSize: 14,
+          fontWeight: 800,
+          cursor: "pointer",
+          marginBottom: 8,
+        }}
+      >
+        Home
+      </div>
+      
       <h1 style={styles.h1}>On-Course Caddie</h1>
       <p style={styles.p}>
         Pick the moment you’re in — calm cues for the next shot.
@@ -143,7 +167,7 @@ const items = [
               <p style={styles.tileDesc}>{it.desc}</p>
             </div>
           </Link>
-        ))}
+        ))}y
       </div>
     </div>
   </div>
