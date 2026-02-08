@@ -593,10 +593,25 @@ export default function HomePage() {
                 >
                   <div style={styles.tileTitleRow}>
                     <h2 style={styles.tileTitle}>{TITLES[k]}</h2>
-                    {locked ? <span style={styles.lock}>🔒</span> : <span>›</span>}
-                  </div>
-                  <p style={styles.tileDesc}>{DESCS[k]}</p>
-                </div>
+
+                    {k === "OnCourseCaddie" ? (
+                      <span
+                        style={{
+                          padding: "4px 8px",
+                          borderRadius: 999,
+                          background: "#ffd54f",
+                          color: "#111",
+                          fontSize: 11,
+                          fontWeight: 900,
+                        }}
+                       >
+                        NEW
+                       </span>                    
+                     ) : null}
+                   </div>
+
+                   <p style={styles.tileDesc}>{DESCS[k]}</p>
+                 </div>
               );
             })}
           </div>
