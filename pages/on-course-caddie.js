@@ -89,32 +89,32 @@ const router = useRouter();
 const items = [
   {
     title: "Pre-Round",
-    href: "/category/Pre-Round",
+    href: "/category/Pre-Round?from=on-course",
     desc: "Settle your mind. Commit to how you want to play today.",
   },
   {
     title: "Tee Shot",
-    href: "/category/Tee-Shot",
+    href: "/category/Tee-Shot?from=on-course",
     desc: "Pick a line. Commit to it. Swing free.",
   },
   {
     title: "Approach",
-    href: "/category/Approach",
+    href: "/category/Approach?from=on-course",
     desc: "Smart target. Smooth strike. Middle of the green is good.",
   },
   {
     title: "Putting",
-    href: "/category/Putting",
+    href: "/category/Putting?from=on-course",
     desc: "Read it. Trust it. Roll it with great pace.",
   },
   {
     title: "Comeback",
-    href: "/category/Comeback",
+    href: "/category/Comeback?from=on-course",
     desc: "That shot’s over. Let’s focus on the next one.",
   },
   {
     title: "Pressure",
-    href: "/category/Pressure",
+    href: "/category/Pressure?from=on-course",
     desc: "Slow breath. Same routine. You’re ready for this.",
   },
 ];
@@ -145,7 +145,7 @@ const items = [
           marginBottom: 8,
         }}
       >
-        Home
+        ← Home
       </div>
       
       <h1 style={styles.h1}>On-Course Caddie</h1>
@@ -167,7 +167,7 @@ const items = [
               <p style={styles.tileDesc}>{it.desc}</p>
             </div>
           </Link>
-        ))}y
+        ))}
       </div>
     </div>
   </div>
