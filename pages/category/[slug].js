@@ -366,9 +366,15 @@ const keyFromSlug = (raw) => {
         <div style={styles.overlay}>
           <main style={styles.card}>
             <div style={styles.topRow}>
-              <button style={styles.backBtn} onClick={() => router.push(["pre-round", "tee-shot", "approach", "putting", "comeback", "pressure",].includes(slug) ? "/on-course-caddie" : "/" )}>
-                ← Home
-              </button>
+             <button
+               style={styles.backBtn}
+               onClick={() => {
+                 router.push(router.query.from === "on-course" ? "/on-course-caddie" : "/");
+               }}
+             >
+               ← Home
+             </button>
+
               <div style={styles.pill}>
                 {notesList.length ? `${index + 1}/${notesList.length}` : "0/0"}
               </div>
@@ -461,7 +467,7 @@ const keyFromSlug = (raw) => {
         <div style={styles.overlay}>
           <main style={styles.card}>
             <div style={styles.topRow}>
-              <button style={styles.backBtn} onClick={() => router.push("/")}>
+              <button style={styles.backBtn} onClick={() => router.push(router.query.from === "on-course" ? "/on-course-caddie" : "/")}>
                 ← Home
               </button>
               <div style={styles.pill}>Locked</div>
@@ -535,7 +541,7 @@ const keyFromSlug = (raw) => {
       <div style={styles.overlay}>
         <main style={styles.card}>
           <div style={styles.topRow}>
-            <button style={styles.backBtn} onClick={() => router.push("/")}>
+            <button style={styles.backBtn} onClick={() => router.push(router.query.from === "on-course" ? "/on-course-caddie" : "/")}>
               ← Home
             </button>
             <div style={styles.pill}>
