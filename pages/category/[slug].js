@@ -7,7 +7,13 @@ export default function CategoryPage() {
   const { slug } = router.query;
 
   // Free categories (locked ones show a lock screen)
-  const FREE_KEYS = new Set(["Confidence", "Focus", "coachNotes"]);
+  const FREE_KEYS = new Set([
+    "Confidence", 
+    "Focus",
+    "coachNotes",
+    "Pre-Round",
+    "Tee-Shot",
+   ]);
 
   const TITLES = {
     Confidence: "Confidence",

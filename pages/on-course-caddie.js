@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 
 const styles = {
@@ -85,38 +85,59 @@ const styles = {
 export default function OnCourseCaddieHub() {
 
 const router = useRouter();
+const [isPaid, setIsPaid] = useState(false);
+
+useEffect(() => {
+  try {
+    const v =
+      localStorage.getItem("tmc:paid") ||
+      localStorage.getItem("paid") ||
+      localStorage.getItem("tmc_paid");
+
+    setIsPaid(v === "1" || v === "true");
+  } catch {
+    setIsPaid(false);
+  }
+}, []);
+
 
 const items = [
   {
     title: "Pre-Round",
     href: "/category/Pre-Round?from=on-course",
     desc: "Settle your mind. Commit to how you want to play today.",
+    free: true,
   },
   {
     title: "Tee Shot",
     href: "/category/Tee-Shot?from=on-course",
     desc: "Pick a line. Commit to it. Swing free.",
-  },
+    free: true, 
+ },
   {
     title: "Approach",
     href: "/category/Approach?from=on-course",
     desc: "Smart target. Smooth strike. Middle of the green is good.",
-  },
+    free: false,
+ },
   {
     title: "Putting",
     href: "/category/Putting?from=on-course",
     desc: "Read it. Trust it. Roll it with great pace.",
+    free: false,
   },
   {
     title: "Comeback",
     href: "/category/Comeback?from=on-course",
     desc: "That shot’s over. Let’s focus on the next one.",
-  },
+    free: false, 
+ },
   {
     title: "Pressure",
     href: "/category/Pressure?from=on-course",
     desc: "Slow breath. Same routine. You’re ready for this.",
-  },
+    free: false,
+   },
 ];
 
   return (
@@ -155,19 +176,17 @@ const items = [
 
       <div style={styles.grid}>
         {items.map((it) => (
-          <Link
+          <div
             key={it.href}
-            href={it.href}
-            style={{ textDecoration: "none", color: "inherit" }}
+            style={styles.tile}
+            onClick={() => router.push(it.href)}
           >
-            <div style={styles.tile}>
-              <div style={styles.tileTitleRow}>
-                <h2 style={styles.tileTitle}>{it.title}</h2>
-              </div>
-              <p style={styles.tileDesc}>{it.desc}</p>
+            <div style={styles.tileTitleRow}>
+              <h2 style={styles.tileTitle}>{it.title}</h2>
             </div>
-          </Link>
-        ))}
+            <p style={styles.tileDesc}>{it.desc}</p>
+            </div>
+          ))}
       </div>
     </div>
   </div>
