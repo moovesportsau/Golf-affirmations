@@ -104,37 +104,37 @@ useEffect(() => {
 const items = [
   {
     title: "Pre-Round",
-    href: "/category/Pre-Round?from=on-course",
+    href: "/category/OC-Pre-Round?from=on-course",
     desc: "Settle your mind. Commit to how you want to play today.",
     free: true,
   },
   {
     title: "Tee Shot",
-    href: "/category/Tee-Shot?from=on-course",
+    href: "/category/OC-Tee-Shot?from=on-course",
     desc: "Pick a line. Commit to it. Swing free.",
     free: true, 
  },
   {
     title: "Approach",
-    href: "/category/Approach?from=on-course",
+    href: "/category/OC-Approach?from=on-course",
     desc: "Smart target. Smooth strike. Middle of the green is good.",
     free: false,
  },
   {
     title: "Putting",
-    href: "/category/Putting?from=on-course",
+    href: "/category/OC-Putting?from=on-course",
     desc: "Read it. Trust it. Roll it with great pace.",
     free: false,
   },
   {
     title: "Comeback",
-    href: "/category/Comeback?from=on-course",
+    href: "/category/OC-Comeback?from=on-course",
     desc: "That shot’s over. Let’s focus on the next one.",
     free: false, 
  },
   {
     title: "Pressure",
-    href: "/category/Pressure?from=on-course",
+    href: "/category/OC-Pressure?from=on-course",
     desc: "Slow breath. Same routine. You’re ready for this.",
     free: false,
    },

@@ -11,8 +11,8 @@ export default function CategoryPage() {
     "Confidence", 
     "Focus",
     "coachNotes",
-    "Pre-Round",
-    "Tee-Shot",
+    "OC-Pre-Round",
+    "OC-Tee-Shot",
    ]);
 
   const TITLES = {
@@ -208,12 +208,12 @@ const keyFromSlug = (raw) => {
     recovery: "Recovery",
 
     // situational / caddie categories (MATCH data/affirmations.js KEYS EXACTLY)
-    preround: "Pre-Round",
-    teeshot: "Tee-Shot",
-    approach: "Approach",
-    putting: "Putting",
-    comeback: "Comeback",
-    pressure: "Pressure",
+    ocpreround: "OC-Pre-Round",
+    octeeshot: "OC-Tee-Shot",
+    ocapproach: "OC-Approach",
+    ocputting: "OC-Putting",
+    occomeback: "OC-Comeback",
+    ocpressure: "OC-Pressure",
   };
 
   return map[cleaned] || s;
