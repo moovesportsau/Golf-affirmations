@@ -202,6 +202,7 @@ const keyFromSlug = (raw) => {
     focus: "Focus",
     technique: "Technique",
     growth: "Growth",
+    preround: "PreRound",
     tournamentmindset: "TournamentMindset",
     coursemanagement: "CourseManagement",
     resilience: "Resilience",
