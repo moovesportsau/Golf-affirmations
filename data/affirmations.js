@@ -208,8 +208,8 @@ export const affirmations = {
 "OC-Pre-Round": [
     "Calm body. Clear plan.",
     "Trust your  preparation and commit to today’s process.",
-    "Mental Caddie reminder: You don’t need perfect — stay committed.",
-    "Focus on decisions, not outcomes."
+    "Focus on decisions, not outcomes.",
+    "Mental Caddie reminder: You don’t need perfect — stay committed."
   ],
   "OC-Tee-Shot": [
     "Pick it. Commit.",
