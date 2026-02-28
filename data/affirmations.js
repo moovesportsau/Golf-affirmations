@@ -214,28 +214,31 @@ export const affirmations = {
   "OC-Tee-Shot": [
     "Pick it. Commit.",
     "Choose a clear target and swing with confidence.",
-    "Mental Caddie reminder: Small target. Free swing.",
-    "Balanced and smooth."
+    "Balanced and smooth,",
+    "Mental Caddie reminder: Small target. Free swing."
   ],
   "OC-Approach": [
     "Commit fully to the club and shot you’ve chosen.",
     "Solid contact.",
+    "Pick your target, hit with confidence.",
     "Mental Caddie reminder: Middle of the green is smart."
   ],
   "OC-Putting": [
     "See it. Roll it.",
     "Trust your  read and roll the ball with confidence.",
-    "Mental Caddie reminder: Speed first.",
-    "Smooth pace."
+    "Smooth pace.",
+    "Mental Caddie reminder: Speed first."
   ],
   "OC-Comeback": [
     "Next shot only.",
-    "That shot is finished. Focus moves forward.",
+    "That shot is finished. Focus move forward.",
+    "Claim this shot as yours.",
     "Mental Caddie reminder: Bad shots happen. Poor decisions don’t need to."
   ],
   "OC-Pressure": [
     "Breathe. Commit.",
     "Pressure means I care — and I trust my process.",
+    "Your happy place is your control, play with happiness.",
     "Mental Caddie reminder: Pressure is fine, frustration is not.",
   ],
 };
