@@ -558,12 +558,36 @@ export default function HomePage() {
               >
                 Unlock Full Access — $3.49 one-time
               </button>
+
+              {/* TEMP RESTORE BUTTON */}
               <button
-                style={styles.ghostBtn}
-                onClick={() => router.push("/favorites")}
-              >
-                Favorites
-              </button>
+                style={{
+                background: "transparent",
+                border: "none",
+                color: "rgba(255,255,255,0.5)",
+                fontSize: 12,
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                const code = prompt("Enter restore code:");
+                if (code === "caddie2025") {
+                  localStorage.setItem("tmc:paid", "1");
+                  alert("Access restored");
+                  window.location.reload();
+                } else {
+                  alert("Invalid code");
+                }
+              }}
+            >
+              Restore Purchase
+            </button>
+
+            <button
+              style={styles.ghostBtn}
+              onClick={() => router.push("/favorites")}
+            >
+              Favorites
+            </button>
               <div style={{ flex: "1 1 100%" }} />
               <p style={{ ...styles.p, margin: "0" }}>
                 {lockedCount} categories unlocked with full access paid.
