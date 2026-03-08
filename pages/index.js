@@ -632,7 +632,23 @@ export default function HomePage() {
                         NEW
                        </span>                    
                      ) : null}
-                   </div>
+                  
+                    {(k === "Confidence" || k === "Focus") && (
+                      <span
+                       style={{
+                         padding: "4px 8px",
+                         borderRadius: 999,
+                         background: "#b8ffcf",
+                         color: "#111",
+                         fontSize: 11,
+                         fontWeight: 900,
+                       }}
+                      >
+                       FREE
+                      </span>
+                    )}
+
+                    </div>
 
                    <p style={styles.tileDesc}>{DESCS[k]}</p>
                  </div>

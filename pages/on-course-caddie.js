@@ -181,11 +181,27 @@ const items = [
             style={styles.tile}
             onClick={() => router.push(it.href)}
           >
-            <div style={styles.tileTitleRow}>
-              <h2 style={styles.tileTitle}>{it.title}</h2>
-            </div>
-            <p style={styles.tileDesc}>{it.desc}</p>
-            </div>
+          <div style={styles.tileTitleRow}>
+            <h2 style={styles.tileTitle}>{it.title}</h2>
+
+            {it.free && (
+              <span
+                style={{
+                  padding: "4px 8px",
+                  borderRadius: 999,
+                  background: "#b8ffcf",
+                  color: "#111",
+                  fontSize: 11,
+                  fontWeight: 900,
+                }}
+              >
+                FREE
+              </span>
+            )}
+          </div>
+
+          <p style={styles.tileDesc}>{it.desc}</p>
+          </div>
           ))}
       </div>
     </div>
